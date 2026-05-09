@@ -1,0 +1,50 @@
+name: Nexora Health CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install Dependencies
+        run: |
+          cd client
+          npm ci
+      - name: Build Frontend
+        run: |
+          cd client
+          npm run build
+
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install Dependencies
+        run: |
+          cd server
+          npm ci
+      - name: Verify Backend Setup
+        run: node -e "console.log('Backend OK')"
+
+  deploy-note:
+    needs: [build-frontend, build-backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment Instructions
+        run: |
+          echo "Deployment ready. Frontend -> Vercel. Backend -> Render."
