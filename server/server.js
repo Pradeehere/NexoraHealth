@@ -1,4 +1,10 @@
+// Polyfill global crypto for packages that expect it (e.g. dotenv v17, bcryptjs v3, express-rate-limit v8)
+if (typeof globalThis.crypto === 'undefined') {
+    globalThis.crypto = require('crypto');
+}
+
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
