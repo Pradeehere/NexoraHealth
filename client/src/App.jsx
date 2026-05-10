@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
 import HealthTracker from './pages/HealthTracker';
 import Reports from './pages/Reports';
+import BMIPage from './pages/BMIPage';
 import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -22,9 +23,9 @@ function App() {
       <div className="flex flex-col min-h-screen bg-[var(--bg-primary)]">
         <Toaster position="top-right" />
         <Navbar />
-        <div className="flex flex-1">
+        <div className="flex flex-1 flex-col md:flex-row pb-16 md:pb-0">
           <Sidebar />
-          <main className="flex-1 p-6">
+          <main className="flex-1 p-4 md:p-6 w-full max-w-[100vw]">
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -42,6 +43,11 @@ function App() {
               <Route path="/reports" element={
                 <ProtectedRoute>
                   <Reports />
+                </ProtectedRoute>
+              } />
+              <Route path="/bmi" element={
+                <ProtectedRoute>
+                  <BMIPage />
                 </ProtectedRoute>
               } />
               <Route path="/profile" element={

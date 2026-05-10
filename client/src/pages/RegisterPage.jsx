@@ -28,31 +28,31 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-100px)] flex items-center justify-center p-4">
-            <div className="glass-card w-full max-w-2xl p-8 animate-fade-in-up">
-                <h2 className="text-3xl font-heading font-bold text-center mb-2">Join Nexora Health</h2>
-                <p className="text-center text-brand-muted mb-8">Start your wellness journey today.</p>
+        <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4 bg-white text-black font-jost selection:bg-black selection:text-white">
+            <div className="w-full max-w-2xl p-10 bg-white border border-black animate-fade-in-up">
+                <h2 className="text-4xl font-cormorant italic font-bold text-center mb-4 tracking-wide uppercase">Join Nexora</h2>
+                <p className="text-center text-[#555] mb-10 font-tenor uppercase tracking-widest text-xs">Start your wellness journey today</p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Full Name</label>
-                            <input type="text" {...register('name', { required: 'Name is required' })} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
-                            {errors.name && <p className="text-brand-danger text-xs mt-1">{errors.name.message}</p>}
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Full Name</label>
+                            <input type="text" {...register('name', { required: 'Name is required' })} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
+                            {errors.name && <p className="text-red-500 text-xs mt-1 font-bold">{errors.name.message}</p>}
                         </div>
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Email</label>
-                            <input type="email" {...register('email', { required: 'Email is required' })} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
-                            {errors.email && <p className="text-brand-danger text-xs mt-1">{errors.email.message}</p>}
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Email</label>
+                            <input type="email" {...register('email', { required: 'Email is required' })} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
+                            {errors.email && <p className="text-red-500 text-xs mt-1 font-bold">{errors.email.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Age</label>
-                            <input type="number" {...register('age')} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Age</label>
+                            <input type="number" {...register('age')} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
                         </div>
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Gender</label>
-                            <select {...register('gender')} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none">
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Gender</label>
+                            <select {...register('gender')} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors">
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -61,21 +61,21 @@ const RegisterPage = () => {
                         </div>
 
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Height (cm)</label>
-                            <input type="number" {...register('height')} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Height (cm)</label>
+                            <input type="number" {...register('height')} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
                         </div>
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Weight (kg)</label>
-                            <input type="number" {...register('weight')} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Weight (kg)</label>
+                            <input type="number" {...register('weight')} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
                         </div>
 
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Password</label>
-                            <input type="password" {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Min 6 chars' } })} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
-                            {errors.password && <p className="text-brand-danger text-xs mt-1">{errors.password.message}</p>}
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Password</label>
+                            <input type="password" {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'Min 6 chars' } })} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
+                            {errors.password && <p className="text-red-500 text-xs mt-1 font-bold">{errors.password.message}</p>}
                         </div>
                         <div>
-                            <label className="block text-brand-muted mb-2 text-sm">Confirm Password</label>
+                            <label className="block text-black font-tenor font-bold uppercase tracking-widest text-xs mb-2">Confirm Password</label>
                             <input type="password" {...register('confirmPassword', {
                                 required: 'Please confirm password',
                                 validate: (val) => {
@@ -83,18 +83,18 @@ const RegisterPage = () => {
                                         return "Your passwords do no match";
                                     }
                                 }
-                            })} className="w-full bg-brand-dark/50 border border-brand-card rounded-lg px-4 py-3 text-white focus:border-brand-cyan outline-none" />
-                            {errors.confirmPassword && <p className="text-brand-danger text-xs mt-1">{errors.confirmPassword.message}</p>}
+                            })} className="w-full bg-white border border-black p-3 focus:outline-none focus:border-brand-gold transition-colors" />
+                            {errors.confirmPassword && <p className="text-red-500 text-xs mt-1 font-bold">{errors.confirmPassword.message}</p>}
                         </div>
                     </div>
 
-                    <button type="submit" disabled={isLoading} className="w-full bg-brand-cyan text-brand-dark font-bold py-3 rounded-lg hover:bg-brand-cyan/80 transition-all shadow-[0_0_10px_rgba(0,212,255,0.3)]">
+                    <button type="submit" disabled={isLoading} className="w-full bg-black text-white font-tenor uppercase tracking-[0.2em] py-4 hover:bg-brand-gold transition-colors mt-8">
                         {isLoading ? 'Registering...' : 'Create Account'}
                     </button>
                 </form>
 
-                <p className="text-center text-brand-muted mt-6 text-sm">
-                    Already have an account? <Link to="/login" className="text-brand-cyan hover:underline">Log in</Link>
+                <p className="text-center mt-8 text-xs font-tenor tracking-widest uppercase">
+                    Already have an account? <Link to="/login" className="text-brand-gold hover:underline font-bold">Log in</Link>
                 </p>
             </div>
         </div>

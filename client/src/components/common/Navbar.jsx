@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../features/auth/authSlice';
-import { Activity, LogOut, User } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -16,27 +16,26 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="glass-card flex items-center justify-between p-4 sticky top-0 z-50 rounded-none border-t-0 border-l-0 border-r-0">
+        <nav className="bg-brand-dark flex items-center justify-between p-4 sticky top-0 z-50 border-b border-brand-gold text-white">
             <div className="flex items-center gap-2">
-                <Activity className="text-brand-cyan h-8 w-8" />
-                <Link to="/" className="text-2xl font-heading font-bold text-brand-text">
-                    Nexora <span className="text-brand-cyan">Health</span>
+                <Link to="/" className="text-3xl font-cormorant font-bold text-white tracking-widest">
+                    NEXORA
                 </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6 font-tenor uppercase tracking-[0.15em] text-sm">
                 {user ? (
                     <>
-                        <span className="text-brand-muted hidden sm:inline">Welcome, {user.name}</span>
-                        <button onClick={onLogout} className="flex items-center gap-2 bg-brand-card hover:bg-white/10 px-4 py-2 rounded-lg transition-colors border border-brand-card hover:border-brand-danger/50 text-brand-danger">
-                            <LogOut size={18} />
+                        <span className="hidden sm:inline">Welcome, {user.name}</span>
+                        <button onClick={onLogout} className="flex items-center gap-2 px-4 py-2 border border-brand-gold hover:bg-white hover:text-black transition-colors">
+                            <LogOut size={16} strokeWidth={1} />
                             <span className="hidden sm:inline">Logout</span>
                         </button>
                     </>
                 ) : (
                     <>
-                        <Link to="/login" className="text-brand-text hover:text-brand-cyan transition-colors">Login</Link>
-                        <Link to="/register" className="bg-brand-cyan text-brand-dark px-4 py-2 rounded-lg font-bold hover:bg-brand-cyan/80 transition-colors">
+                        <Link to="/login" className="hover:text-brand-gold transition-colors">Login</Link>
+                        <Link to="/register" className="bg-white text-black px-6 py-2 hover:bg-brand-gold hover:text-white transition-colors">
                             Register
                         </Link>
                     </>

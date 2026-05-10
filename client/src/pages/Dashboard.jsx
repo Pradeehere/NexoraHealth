@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Brain, Flame, Droplets, Moon, Scale } from 'lucide-react';
 import axios from 'axios';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
@@ -37,8 +37,7 @@ const Dashboard = () => {
                     setAiSuggestions(aiRes.data.suggestions);
                 } catch (err) {
                     console.error("AI error", err);
-                    // Fallback array just in case
-                    setAiSuggestions(["Stay hydrated and maintain consistent sleep."]);
+                    setAiSuggestions(["Maintain a balanced luxury lifestyle with consistent sleep and optimal hydration."]);
                 }
 
                 setIsLoading(false);
@@ -54,94 +53,90 @@ const Dashboard = () => {
 
     if (isLoading) return <LoadingSkeleton count={4} className="h-40" />;
 
-    const getBMIBadgeColor = (bmi) => {
-        if (bmi < 18.5) return 'bg-blue-500 text-white';
-        if (bmi >= 18.5 && bmi < 24.9) return 'bg-brand-green text-brand-dark';
-        if (bmi >= 25 && bmi < 29.9) return 'bg-brand-warning text-brand-dark';
-        return 'bg-brand-danger text-white';
-    };
-
-    const bmi = user.weight && user.height ? (user.weight / Math.pow(user.height / 100, 2)).toFixed(1) : 0;
+    const storedBMI = (() => { try { const s = localStorage.getItem('nexora_bmi'); return s ? JSON.parse(s).value : null; } catch { return null; } })();
+    const bmi = storedBMI ?? (user.weight && user.height ? (user.weight / Math.pow(user.height / 100, 2)).toFixed(1) : 0);
 
     return (
-        <div className="space-y-6 animate-fade-in-up">
-            <header className="flex justify-between items-center mb-8">
+        <div className="space-y-8 animate-fade-in-up pb-12">
+            <header className="bg-white border-b border-black pb-4 flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-heading font-bold text-brand-text">Good Morning, {user.name.split(' ')[0]} 👋</h1>
-                    <p className="text-brand-muted">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <h1 className="text-4xl md:text-5xl font-jost font-medium text-black tracking-tight">
+                        Good Morning, {user.name.split(' ')[0]}
+                    </h1>
+                </div>
+                <div className="font-jost small-caps text-sm text-[#555] tracking-widest uppercase">
+                    {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </header>
 
             {/* Top Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="glass-card p-6 flex flex-col items-center">
-                    <Flame className="text-brand-warning w-8 h-8 mb-2" />
-                    <h3 className="text-brand-muted text-sm">Calories Today</h3>
-                    <p className="text-2xl font-bold">{healthData?.calories || 0}</p>
-                </div>
-                <div className="glass-card p-6 flex flex-col items-center relative overflow-hidden">
-                    <Droplets className="text-blue-400 w-8 h-8 mb-2 z-10" />
-                    <h3 className="text-brand-muted text-sm z-10">Water Intake</h3>
-                    <p className="text-2xl font-bold z-10">{healthData?.waterIntake || 0} / 8</p>
-                    <div
-                        className="absolute bottom-0 left-0 w-full bg-blue-500/20 transition-all duration-1000"
-                        style={{ height: `${Math.min(((healthData?.waterIntake || 0) / 8) * 100, 100)}%` }}
-                    />
-                </div>
-                <div className="glass-card p-6 flex flex-col items-center">
-                    <Moon className="text-purple-400 w-8 h-8 mb-2" />
-                    <h3 className="text-brand-muted text-sm">Sleep Hours</h3>
-                    <p className="text-2xl font-bold">{healthData?.sleepHours || 0}</p>
-                </div>
-                <div className="glass-card p-6 flex flex-col items-center">
-                    <Scale className="text-brand-cyan w-8 h-8 mb-2" />
-                    <h3 className="text-brand-muted text-sm flex items-center justify-between w-full px-4">
-                        BMI <span className={`px-2 py-0.5 rounded text-xs font-bold ${getBMIBadgeColor(bmi)}`}>{bmi}</span>
-                    </h3>
-                    <p className="text-2xl font-bold">{user.weight || 0} kg</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                    { label: "Calories Today", value: healthData?.calories || 0, icon: Flame },
+                    { label: "Water Intake", value: `${healthData?.waterIntake || 0} / 8`, icon: Droplets },
+                    { label: "Sleep Hours", value: healthData?.sleepHours || 0, icon: Moon },
+                    { label: "BMI", value: bmi, icon: Scale }
+                ].map((stat, i) => (
+                    <div key={i} className="bg-white border border-black p-6 flex flex-col relative group hover:bg-black transition-colors duration-300">
+                        <div className="flex justify-between items-start mb-6">
+                            <h3 className="font-jost text-sm text-gray-500 font-medium uppercase tracking-widest">{stat.label}</h3>
+                            <stat.icon className="text-black group-hover:text-white transition-colors w-5 h-5" strokeWidth={1.5} />
+                        </div>
+                        <p className="font-jost font-medium text-5xl text-black group-hover:text-white transition-colors">{stat.value}</p>
+
+                        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-gold"></div>
+                    </div>
+                ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Charts Column */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="glass-card p-6 h-80">
-                        <h3 className="font-heading font-bold mb-4">Calorie Trend (Last 7 Days)</h3>
+                <div className="lg:col-span-2 space-y-8">
+                    <div className="bg-white border border-black p-8 h-[400px]">
+                        <h3 className="font-jost text-sm uppercase tracking-widest text-gray-500 mb-8 font-medium">Calorie Trend (Last 7 Days)</h3>
                         <ResponsiveContainer width="100%" height="85%">
                             <LineChart data={weeklyData}>
-                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#8892b0" />
-                                <YAxis stroke="#8892b0" />
-                                <Tooltip contentStyle={{ backgroundColor: '#0a0f1e', borderColor: '#00d4ff' }} />
-                                <Line type="monotone" dataKey="calories" stroke="#00d4ff" strokeWidth={3} dot={{ fill: '#00d4ff', strokeWidth: 2 }} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
+                                <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }}
+                                    itemStyle={{ color: '#C9A84C' }}
+                                />
+                                <Line type="monotone" dataKey="calories" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 2, r: 4 }} activeDot={{ r: 6 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
 
-                    <div className="glass-card p-6 h-80">
-                        <h3 className="font-heading font-bold mb-4">Sleep Quality (Last 7 Days)</h3>
+                    <div className="bg-white border border-black p-8 h-[400px]">
+                        <h3 className="font-jost text-sm uppercase tracking-widest text-gray-500 mb-8 font-medium">Sleep Quality (Last 7 Days)</h3>
                         <ResponsiveContainer width="100%" height="85%">
                             <BarChart data={weeklyData}>
-                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#8892b0" />
-                                <YAxis stroke="#8892b0" />
-                                <Tooltip contentStyle={{ backgroundColor: '#0a0f1e', borderColor: '#00d4ff' }} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-                                <Bar dataKey="sleepHours" fill="#00ff9d" radius={[4, 4, 0, 0]} />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
+                                <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
+                                <Tooltip
+                                    contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }}
+                                    cursor={{ fill: '#f5f5f5' }}
+                                    itemStyle={{ color: '#C9A84C' }}
+                                />
+                                <Bar dataKey="sleepHours" fill="#C9A84C" />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
-                {/* Right Sidebar Column */}
-                <div className="space-y-6">
-                    <div className="glass-card p-6 border-brand-cyan/30 border-2">
-                        <div className="flex items-center gap-2 mb-4">
-                            <Brain className="text-brand-cyan" />
-                            <h3 className="font-heading font-bold text-brand-cyan">Nexora AI Insights</h3>
+                {/* AI Insights Column */}
+                <div className="space-y-8">
+                    <div className="bg-white border border-black p-8">
+                        <div className="flex items-center gap-3 mb-8">
+                            <Brain className="text-black w-6 h-6" strokeWidth={1.5} />
+                            <h3 className="font-jost font-medium text-lg text-black tracking-wide">NEXORA AI INSIGHTS</h3>
                         </div>
-                        <ul className="space-y-4">
+                        <ul className="space-y-6">
                             {aiSuggestions.map((tip, idx) => (
-                                <li key={idx} className="bg-brand-dark/50 p-3 rounded-lg text-sm text-brand-text/90 flex gap-2 items-start">
-                                    <span className="text-brand-cyan mt-1">•</span>
-                                    <span>{tip}</span>
+                                <li key={idx} className="pl-4 border-l-2 border-black text-gray-700 font-jost text-base leading-relaxed">
+                                    {tip}
                                 </li>
                             ))}
                         </ul>

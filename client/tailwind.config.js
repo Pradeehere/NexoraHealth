@@ -8,19 +8,18 @@ export default {
         extend: {
             colors: {
                 brand: {
-                    dark: '#0a0f1e',
-                    card: 'rgba(255, 255, 255, 0.04)',
-                    cyan: '#00d4ff',
-                    green: '#00ff9d',
-                    text: '#f0f4ff',
-                    muted: '#8892b0',
+                    dark: '#000000',
+                    light: '#ffffff',
+                    gold: '#C9A84C',
+                    muted: '#555555',
                     danger: '#ff4757',
                     warning: '#ffa502'
                 }
             },
             fontFamily: {
-                heading: ['Syne', 'sans-serif'],
-                body: ['DM Sans', 'sans-serif'],
+                cormorant: ['Cormorant Garamond', 'serif'],
+                tenor: ['Tenor Sans', 'sans-serif'],
+                jost: ['Jost', 'sans-serif'],
             }
         },
     },

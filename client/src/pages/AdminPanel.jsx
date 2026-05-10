@@ -52,59 +52,59 @@ const AdminPanel = () => {
     if (isLoading) return <LoadingSkeleton count={4} className="h-40" />;
 
     return (
-        <div className="space-y-6 animate-fade-in-up">
-            <h1 className="text-3xl font-heading font-bold mb-6 text-brand-green">Admin Dashboard</h1>
+        <div className="space-y-8 animate-fade-in-up pb-12">
+            <header className="bg-white border-b border-black pb-4">
+                <h1 className="text-4xl md:text-5xl font-cormorant italic font-bold text-black uppercase tracking-wide">
+                    Admin Dashboard
+                </h1>
+            </header>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="glass-card p-6 border-l-4 border-brand-cyan">
-                    <Users className="text-brand-cyan mb-2" />
-                    <h4 className="text-brand-muted text-sm">Total Users</h4>
-                    <p className="text-2xl font-bold">{stats?.totalUsers || 0}</p>
-                </div>
-                <div className="glass-card p-6 border-l-4 border-purple-400">
-                    <Activity className="text-purple-400 mb-2" />
-                    <h4 className="text-brand-muted text-sm">Total Records</h4>
-                    <p className="text-2xl font-bold">{stats?.totalRecords || 0}</p>
-                </div>
-                <div className="glass-card p-6 border-l-4 border-brand-warning">
-                    <Activity className="text-brand-warning mb-2" />
-                    <h4 className="text-brand-muted text-sm">Active Today</h4>
-                    <p className="text-2xl font-bold">{stats?.activeToday || 0}</p>
-                </div>
-                <div className="glass-card p-6 border-l-4 border-brand-green">
-                    <Target className="text-brand-green mb-2" />
-                    <h4 className="text-brand-muted text-sm">Goals Created</h4>
-                    <p className="text-2xl font-bold">{stats?.goalsCreated || 0}</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                    { label: "Total Users", value: stats?.totalUsers || 0, icon: Users },
+                    { label: "Total Records", value: stats?.totalRecords || 0, icon: Activity },
+                    { label: "Active Today", value: stats?.activeToday || 0, icon: Activity },
+                    { label: "Goals Created", value: stats?.goalsCreated || 0, icon: Target }
+                ].map((stat, i) => (
+                    <div key={i} className="bg-white border border-black p-6 flex flex-col relative group hover:bg-black transition-colors duration-300">
+                        <div className="flex justify-between items-start mb-6">
+                            <h3 className="font-tenor uppercase tracking-[0.2em] text-xs text-brand-gold">{stat.label}</h3>
+                            <stat.icon className="text-black group-hover:text-white transition-colors w-5 h-5" strokeWidth={1} />
+                        </div>
+                        <p className="font-cormorant font-bold text-5xl text-black group-hover:text-white transition-colors">{stat.value}</p>
+
+                        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-gold"></div>
+                    </div>
+                ))}
             </div>
 
-            <div className="glass-card p-6">
-                <h3 className="font-heading font-bold mb-4">User Management</h3>
+            <div className="bg-white border border-black p-8">
+                <h3 className="font-tenor uppercase tracking-widest text-lg mb-8 text-black">User Management</h3>
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left">
+                    <table className="w-full text-left font-jost">
                         <thead>
-                            <tr className="border-b border-brand-card text-brand-muted text-sm">
-                                <th className="pb-2">Name</th>
-                                <th className="pb-2">Email</th>
-                                <th className="pb-2">Role</th>
-                                <th className="pb-2">Actions</th>
+                            <tr className="border-b border-black text-[#555] text-xs font-tenor uppercase tracking-widest">
+                                <th className="pb-4 font-normal">Name</th>
+                                <th className="pb-4 font-normal">Email</th>
+                                <th className="pb-4 font-normal">Role</th>
+                                <th className="pb-4 font-normal">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {users.map(u => (
-                                <tr key={u._id} className="border-b border-brand-card/50 hover:bg-brand-card/50 transition-colors">
-                                    <td className="py-3 font-medium">{u.name}</td>
-                                    <td>{u.email}</td>
+                                <tr key={u._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                    <td className="py-4 font-bold text-black">{u.name}</td>
+                                    <td className="text-[#555]">{u.email}</td>
                                     <td>
-                                        <span className={`px-2 py-1 rounded text-xs ${u.role === 'admin' ? 'bg-brand-warning/20 text-brand-warning' : 'bg-brand-cyan/20 text-brand-cyan'}`}>
+                                        <span className={`px-3 py-1 font-tenor text-[10px] tracking-widest uppercase border ${u.role === 'admin' ? 'border-brand-gold text-brand-gold' : 'border-black text-black'}`}>
                                             {u.role}
                                         </span>
                                     </td>
                                     <td>
                                         {u.role !== 'admin' && (
-                                            <button onClick={() => handleDelete(u._id)} className="text-brand-danger hover:text-red-400 p-1 rounded hover:bg-red-400/10 transition-colors">
-                                                <Trash2 size={18} />
+                                            <button onClick={() => handleDelete(u._id)} className="text-red-500 hover:text-black transition-colors p-2">
+                                                <Trash2 size={18} strokeWidth={1} />
                                             </button>
                                         )}
                                     </td>
