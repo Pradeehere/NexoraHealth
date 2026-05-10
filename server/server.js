@@ -20,28 +20,23 @@ connectDB();
 // Security Middlewares
 app.use(helmet());
 
-const allowedOrigins = [
-    process.env.CLIENT_URL,
-    'http://localhost:5173',
-    'http://localhost:3000'
-].filter(Boolean);
-
-// Add variants with/without trailing slashes
-const finalOrigins = allowedOrigins.flatMap(origin => [
-    origin,
-    origin.endsWith('/') ? origin.slice(0, -1) : `${origin}/`
-]);
-
+// Permissive CORS for deployment troubleshooting
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || finalOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+        // Reflect the request origin back to allow it (works with credentials)
+        callback(null, true);
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// Log incoming requests for debugging Render connection
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} - Origin: ${req.headers.origin}`);
+    next();
+});
+
 
 
 // Rate limiting

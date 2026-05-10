@@ -71,7 +71,33 @@ const LoginPage = () => {
                     >
                         {isLoading ? 'Authenticating...' : 'Login'}
                     </button>
+
+                    {/* Bypass Fallback - Requested by User */}
+                    <div className="pt-6 border-t border-gray-100 flex flex-col gap-3 mt-6">
+                        <p className="text-[10px] text-gray-400 font-tenor text-center uppercase tracking-[0.2em]">Deployment Issues?</p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const fakeUser = {
+                                    id: 'bypass-pradeep',
+                                    name: 'Pradeep S',
+                                    email: 'Pradeep@nexora.com',
+                                    role: 'user',
+                                    height: 173,
+                                    weight: 75,
+                                    age: 20,
+                                    token: 'fake-token-bypass'
+                                };
+                                localStorage.setItem('user', JSON.stringify(fakeUser));
+                                window.location.href = '/dashboard';
+                            }}
+                            className="w-full border border-black text-black font-tenor uppercase tracking-widest text-[10px] py-3 hover:bg-black hover:text-white transition-colors"
+                        >
+                            Quick Access (Bypass Auth)
+                        </button>
+                    </div>
                 </form>
+
 
                 <p className="text-center mt-8 text-xs font-tenor tracking-widest uppercase">
                     Don't have an account? <Link to="/register" className="text-brand-gold hover:underline font-bold">Join Nexora</Link>
