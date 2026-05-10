@@ -19,10 +19,30 @@ connectDB();
 
 // Security Middlewares
 app.use(helmet());
+
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'http://localhost:5173',
+    'http://localhost:3000'
+].filter(Boolean);
+
+// Add variants with/without trailing slashes
+const finalOrigins = allowedOrigins.flatMap(origin => [
+    origin,
+    origin.endsWith('/') ? origin.slice(0, -1) : `${origin}/`
+]);
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin || finalOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
 }));
+
 
 // Rate limiting
 const apiLimiter = rateLimit({
