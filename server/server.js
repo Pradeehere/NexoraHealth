@@ -64,6 +64,18 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 
+// Production Seeding Route - Visit this to setup Atlas DB
+app.get('/api/init-db', async (req, res) => {
+    try {
+        const { importData } = require('./seed/seedDataModular');
+        await importData();
+        res.status(200).json({ message: 'Production Database Init Successful (Pradeep S user created)' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 // Error Middleware
 app.use(errorHandler);
 
