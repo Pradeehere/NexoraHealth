@@ -29,18 +29,31 @@ const importData = async () => {
             weight: 75
         });
 
-        // Add some basic records so it's not empty
-        await HealthRecord.create({
+        // Generate 14 days of historical data for the charts
+        const healthRecords = [];
+        for (let i = 0; i < 14; i++) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            healthRecords.push({
+                userId: pradeepUser._id,
+                date: date,
+                weight: 75 + (Math.random() * 0.5 - 0.25),
+                calories: Math.floor(Math.random() * (2400 - 1900 + 1)) + 1900,
+                waterIntake: Math.floor(Math.random() * (10 - 6 + 1)) + 6,
+                sleepHours: Math.floor(Math.random() * (9 - 6 + 1)) + 6,
+                mood: Math.floor(Math.random() * 5) + 1,
+            });
+        }
+        await HealthRecord.insertMany(healthRecords);
+
+        // Notifications
+        await Notification.create({
             userId: pradeepUser._id,
-            date: new Date(),
-            weight: 75,
-            calories: 2100,
-            waterIntake: 8,
-            sleepHours: 7,
-            mood: 4
+            message: 'Welcome to Nexora Health! Your history has been initialized.',
+            type: 'success'
         });
 
-        console.log('Production Data Seeded Successful');
+        console.log('Production Data Seeded Successful (14 Days of History)');
     } catch (error) {
         console.error('Seeding error:', error);
         throw error;
