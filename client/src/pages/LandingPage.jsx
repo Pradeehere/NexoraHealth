@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Activity, Brain, Target, Moon, PieChart, Smartphone, X, ChevronDown, ArrowRight } from 'lucide-react';
+import { useSelector } from 'react-redux';
 import LandingNavbar from '../components/common/LandingNavbar';
 
 const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
