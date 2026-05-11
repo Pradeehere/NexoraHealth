@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../features/auth/authSlice';
 import { LogOut } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ isCollapsed }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
@@ -16,7 +16,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-brand-dark flex items-center justify-between p-4 fixed top-0 left-0 right-0 md:left-64 z-30 border-b border-brand-gold text-white h-16">
+        <nav className={`bg-brand-dark flex items-center justify-between p-4 fixed top-0 right-0 z-30 border-b border-brand-gold text-white h-16 transition-all duration-300 left-0 ${isCollapsed ? 'md:left-[72px]' : 'md:left-64'}`}>
             <div className="flex items-center gap-2">
                 <Link to="/" className="text-3xl font-cormorant font-bold text-white tracking-widest">
                     NEXORA

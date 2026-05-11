@@ -123,7 +123,7 @@ const Reports = () => {
                 <div className="chart-container h-[400px]">
                     <h3 className="chart-title">Calorie Trend</h3>
                     {stats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="90%">
+                        <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={stats}>
                                 <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                 <defs>
@@ -147,7 +147,7 @@ const Reports = () => {
                 <div className="chart-container h-[400px]">
                     <h3 className="chart-title">Sleep Quality</h3>
                     {stats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="90%">
+                        <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={stats}>
                                 <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                 <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
@@ -165,7 +165,7 @@ const Reports = () => {
                 <div className="chart-container h-[400px] lg:col-span-2">
                     <h3 className="chart-title">Weight Trend</h3>
                     {stats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="90%">
+                        <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={stats}>
                                 <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                 <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
@@ -183,7 +183,7 @@ const Reports = () => {
                 <div className="chart-container h-[400px] lg:col-span-2 print:break-inside-avoid">
                     <h3 className="chart-title">Water Intake</h3>
                     {stats.length > 0 ? (
-                        <ResponsiveContainer width="100%" height="90%">
+                        <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={stats}>
                                 <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                 <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />

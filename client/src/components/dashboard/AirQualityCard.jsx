@@ -7,22 +7,36 @@ const AirQualityCard = () => {
     const [isGeoDenied, setIsGeoDenied] = useState(false);
 
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setCoords({
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude
-                    });
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
+        const getGeoLocation = () => {
+            if (navigator.geolocation) {
+                // Set a timeout for geolocation
+                const timeoutId = setTimeout(() => {
+                    console.log("Geolocation timed out, using default: Bangalore");
                     setIsGeoDenied(true);
-                }
-            );
-        } else {
-            setIsGeoDenied(true);
-        }
+                }, 5000);
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        clearTimeout(timeoutId);
+                        setCoords({
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude
+                        });
+                        setIsGeoDenied(false);
+                    },
+                    (error) => {
+                        clearTimeout(timeoutId);
+                        console.error("Geolocation error:", error);
+                        setIsGeoDenied(true);
+                    },
+                    { timeout: 5000 }
+                );
+            } else {
+                setIsGeoDenied(true);
+            }
+        };
+
+        getGeoLocation();
     }, []);
 
     const { data, isLoading, error, refetch } = useGetAirQualityQuery(coords);
@@ -66,7 +80,7 @@ const AirQualityCard = () => {
                         {isGeoDenied ? "Default: Bangalore" : "Live Location"}
                     </div>
                 </div>
-                {data.isMock && <span className="text-[10px] text-orange-400 font-tenor italic tracking-widest">Demo Data</span>}
+                {data.isMockData && <span className="text-[10px] text-orange-400 font-tenor italic tracking-widest">Sample Data</span>}
             </div>
 
             {/* Main AQI */}

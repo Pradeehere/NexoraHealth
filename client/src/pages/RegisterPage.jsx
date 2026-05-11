@@ -5,6 +5,8 @@ import { register as registerUser, reset } from '../features/auth/authSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+import LandingNavbar from '../components/common/LandingNavbar';
+
 const RegisterPage = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const dispatch = useDispatch();
@@ -28,8 +30,8 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4 bg-white text-black font-jost selection:bg-black selection:text-white">
-            <div className="w-full max-w-2xl p-10 bg-white border border-black animate-fade-in-up">
+        <div className="min-h-screen pt-16 flex items-center justify-center p-4 bg-white text-black font-jost selection:bg-black selection:text-white">
+            <LandingNavbar />            <div className="w-full max-w-2xl p-10 bg-white border border-black animate-fade-in-up">
                 <h2 className="text-4xl font-cormorant italic font-bold text-center mb-4 tracking-wide uppercase">Join Nexora</h2>
                 <p className="text-center text-[#555] mb-10 font-tenor uppercase tracking-widest text-xs">Start your wellness journey today</p>
 

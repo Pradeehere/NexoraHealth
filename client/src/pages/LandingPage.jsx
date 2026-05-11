@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Activity, Brain, Target, Moon, PieChart, Smartphone, X, ChevronDown, ArrowRight } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import LandingNavbar from '../components/common/LandingNavbar';
 
 const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
     <div
@@ -70,8 +69,8 @@ const LandingPage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white text-black font-jost selection:bg-black selection:text-brand-gold overflow-x-hidden">
-
+        <div className="min-h-screen bg-white text-black font-jost selection:bg-black selection:text-brand-gold overflow-x-hidden pt-16">
+            <LandingNavbar />
             {/* PWA Banner */}
             {showInstallBanner && (
                 <div className="bg-black text-white px-6 py-3 flex items-center justify-between sticky top-0 z-50">

@@ -64,6 +64,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes'));
 app.use('/api/air-quality', require('./routes/airQualityRoutes'));
+app.use('/api/exercises', require('./routes/exerciseRoutes'));
 
 // Production Seeding Route - Visit this to setup Atlas DB
 app.get('/api/init-db', async (req, res) => {

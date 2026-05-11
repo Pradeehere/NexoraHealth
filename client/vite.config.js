@@ -13,18 +13,18 @@ export default defineConfig({
         name: 'Nexora Health',
         short_name: 'Nexora',
         description: 'AI Powered Health Tracker & Wellness Monitoring System',
-        theme_color: '#0a0f1e',
-        background_color: '#0a0f1e',
+        theme_color: '#000000',
+        background_color: '#000000',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '/icons/icon-192x192.png',
+            src: '/icon-192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: '/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable'

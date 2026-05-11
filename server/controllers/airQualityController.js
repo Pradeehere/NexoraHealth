@@ -27,9 +27,16 @@ const getAirQuality = async (req, res) => {
         const lat = req.query.lat || 12.9716;
         const lon = req.query.lon || 77.5946;
 
+        console.log(`[AirQuality] Fetching data for Lat: ${lat}, Lon: ${lon}`);
+
         const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=european_aqi,pm2_5,pm10,uv_index,pollen_birch,pollen_grass,pollen_olive&timezone=auto`;
 
         const response = await axios.get(url);
+
+        if (!response.data || !response.data.current) {
+            throw new Error("Invalid response from Open-Meteo");
+        }
+
         const data = response.data.current;
 
         const { level: aqiLevel, color: aqiColor } = getAQILevel(data.european_aqi);
@@ -58,11 +65,12 @@ const getAirQuality = async (req, res) => {
                 level: pollenLevel
             },
             warning,
-            location: { lat, lon }
+            location: { lat, lon },
+            isMockData: false
         });
     } catch (error) {
-        console.error('Air Quality API Error:', error.message);
-        // Return mock data so app never crashes
+        console.error('Air Quality API Failure - Returning Mock Data:', error.message);
+        // Return structured mock data so app never crashes
         res.json({
             aqi: 32,
             aqiLevel: "Fair",
@@ -70,10 +78,15 @@ const getAirQuality = async (req, res) => {
             pm25: 12,
             pm10: 22,
             uvIndex: 5,
-            pollen: { birch: 5, grass: 8, olive: 3, level: "Low" },
-            warning: null,
+            pollen: {
+                birch: 5,
+                grass: 8,
+                olive: 3,
+                level: "Low"
+            },
+            warning: "Note: Displaying sample air quality data due to external API connectivity issues.",
             location: { lat: 12.9716, lon: 77.5946 },
-            isMock: true
+            isMockData: true
         });
     }
 };

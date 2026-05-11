@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind } from 'lucide-react';
+import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const { user } = useSelector((state) => state.auth);
 
     if (!user) return null;
@@ -22,7 +22,8 @@ const Sidebar = () => {
     }
 
     const getNavLinkClass = ({ isActive }) =>
-        `flex items-center gap-3 py-4 px-6 transition-all duration-300 font-tenor uppercase tracking-[0.15em] text-sm
+        `flex items-center gap-3 py-4 transition-all duration-300 font-tenor uppercase tracking-[0.15em] text-sm
+         ${isCollapsed ? 'px-0 justify-center' : 'px-6'}
          ${isActive
             ? 'text-brand-gold border-l-4 border-brand-gold bg-brand-gold/5'
             : 'text-black hover:text-brand-gold border-l-4 border-transparent hover:bg-brand-gold/5'
@@ -37,34 +38,54 @@ const Sidebar = () => {
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex flex-col fixed top-0 left-0 w-64 h-screen bg-white border-r border-black z-40 overflow-y-auto overflow-x-hidden">
+            <aside
+                className={`hidden md:flex flex-col fixed top-0 left-0 h-screen bg-white border-r border-black z-40 overflow-y-auto overflow-x-hidden transition-all duration-300 ${isCollapsed ? 'w-18 w-[72px]' : 'w-64'
+                    }`}
+            >
                 {/* Logo Section */}
-                <div className="p-8 sticky top-0 bg-white z-10 w-full mb-4">
-                    <h1 className="text-2xl font-tenor tracking-widest text-black">NEXORA HEALTH</h1>
-                    <div className="h-[1px] w-full bg-brand-gold mt-2 opacity-50"></div>
+                <div className={`p-8 sticky top-0 bg-white z-10 w-full mb-4 flex items-center ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
+                    {isCollapsed ? (
+                        <Heart className="text-brand-gold animate-pulse" size={24} />
+                    ) : (
+                        <div className="w-full">
+                            <h1 className="text-2xl font-tenor tracking-widest text-black truncate">NEXORA HEALTH</h1>
+                            <div className="h-[1px] w-full bg-brand-gold mt-2 opacity-50"></div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Nav Links */}
                 <nav className="flex-1 flex flex-col pt-4">
                     {navItems.map((item) => (
-                        <NavLink key={item.path} to={item.path} className={getNavLinkClass}>
+                        <NavLink key={item.path} to={item.path} className={getNavLinkClass} title={isCollapsed ? item.label : ''}>
                             <item.icon size={20} strokeWidth={1.5} />
-                            <span>{item.label}</span>
+                            {!isCollapsed && <span className="truncate">{item.label}</span>}
                         </NavLink>
                     ))}
                 </nav>
 
+                {/* Toggle Button */}
+                <button
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="flex items-center justify-center py-4 border-t border-brand-gold/20 text-brand-gold hover:bg-brand-gold/5 transition-colors cursor-pointer"
+                    title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                >
+                    {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                </button>
+
                 {/* User Info Section */}
-                <div className="p-6 border-t border-gray-100 flex items-center gap-4 bg-gray-50/50">
-                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold border border-brand-gold">
+                <div className={`p-6 border-t border-gray-100 flex items-center gap-4 bg-gray-50/50 ${isCollapsed ? 'justify-center' : ''}`}>
+                    <div className="w-10 h-10 min-w-10 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold border border-brand-gold">
                         {initials}
                     </div>
-                    <div className="flex flex-col min-w-0">
-                        <p className="text-xs font-bold text-black truncate uppercase tracking-wider">{user.name}</p>
-                        <span className="text-[10px] text-brand-gold font-tenor uppercase tracking-widest bg-brand-gold/10 px-2 py-0.5 rounded-full w-fit">
-                            {user.role}
-                        </span>
-                    </div>
+                    {!isCollapsed && (
+                        <div className="flex flex-col min-w-0">
+                            <p className="text-xs font-bold text-black truncate uppercase tracking-wider">{user.name}</p>
+                            <span className="text-[10px] text-brand-gold font-tenor uppercase tracking-widest bg-brand-gold/10 px-2 py-0.5 rounded-full w-fit">
+                                {user.role}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </aside>
 

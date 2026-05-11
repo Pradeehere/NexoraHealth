@@ -133,7 +133,7 @@ const Dashboard = () => {
                     <div className="chart-container h-[400px]">
                         <h3 className="chart-title">Calorie Trend (Last 7 Days)</h3>
                         {weeklyData.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="85%">
+                            <ResponsiveContainer width="100%" height={300}>
                                 <LineChart data={weeklyData}>
                                     <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                     <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
@@ -157,7 +157,7 @@ const Dashboard = () => {
                     <div className="chart-container h-[400px]">
                         <h3 className="chart-title">Sleep Quality (Last 7 Days)</h3>
                         {weeklyData.length > 0 ? (
-                            <ResponsiveContainer width="100%" height="85%">
+                            <ResponsiveContainer width="100%" height={300}>
                                 <BarChart data={weeklyData}>
                                     <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
                                     <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
