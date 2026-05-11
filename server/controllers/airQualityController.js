@@ -23,71 +23,77 @@ const getPollenLevel = (birch, grass, olive) => {
 // @route   GET /api/air-quality
 // @access  Private
 const getAirQuality = async (req, res) => {
+    const lat = req.query.lat || 12.9716;
+    const lon = req.query.lon || 77.5946;
+
+    console.log('=== AIR QUALITY CONTROLLER HIT ===');
+    console.log('lat:', lat, 'lon:', lon);
+
     try {
-        const lat = req.query.lat || 12.9716;
-        const lon = req.query.lon || 77.5946;
-
-        console.log(`[AirQuality] Fetching data for Lat: ${lat}, Lon: ${lon}`);
-
         const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=european_aqi,pm2_5,pm10,uv_index,pollen_birch,pollen_grass,pollen_olive&timezone=auto`;
+        console.log('Fetching URL:', url);
 
-        const response = await axios.get(url);
+        const axios = require('axios');
+        const response = await axios.get(url, { timeout: 8000 });
+        console.log('Open-Meteo response:', JSON.stringify(response.data));
 
-        if (!response.data || !response.data.current) {
-            throw new Error("Invalid response from Open-Meteo");
-        }
+        const current = response.data.current || {};
+        const aqi = current.european_aqi || 0;
 
-        const data = response.data.current;
+        // AQI level mapping
+        let aqiLevel = 'Good';
+        let aqiColor = '#00e400';
+        if (aqi > 20) { aqiLevel = 'Fair'; aqiColor = '#ffff00'; }
+        if (aqi > 40) { aqiLevel = 'Moderate'; aqiColor = '#ff7e00'; }
+        if (aqi > 60) { aqiLevel = 'Poor'; aqiColor = '#ff0000'; }
+        if (aqi > 80) { aqiLevel = 'Very Poor'; aqiColor = '#8f3f97'; }
+        if (aqi > 100) { aqiLevel = 'Extremely Poor'; aqiColor = '#7e0023'; }
 
-        const { level: aqiLevel, color: aqiColor } = getAQILevel(data.european_aqi);
-        const pollenLevel = getPollenLevel(data.pollen_birch, data.pollen_grass, data.pollen_olive);
+        const birch = current.pollen_birch || 0;
+        const grass = current.pollen_grass || 0;
+        const olive = current.pollen_olive || 0;
+        const maxPollen = Math.max(birch, grass, olive);
+        let pollenLevel = 'Low';
+        if (maxPollen > 10) pollenLevel = 'Moderate';
+        if (maxPollen > 25) pollenLevel = 'High';
+        if (maxPollen > 50) pollenLevel = 'Very High';
 
-        // Warning logic
         let warning = null;
-        if (data.european_aqi > 60 || pollenLevel === "High" || pollenLevel === "Very High") {
-            warning = "Poor air quality or high pollen detected. People with asthma or respiratory issues should limit outdoor activities.";
-        }
-        if (data.uv_index > 7) {
-            warning = warning ? `${warning} High UV index detected, skin protection recommended.` : "High UV index detected. Wear sunscreen and limit direct sun exposure.";
-        }
+        if (aqi > 60) warning = 'Poor air quality detected. People with asthma or respiratory issues should avoid outdoor activities.';
+        if (maxPollen > 25) warning = (warning ? warning + ' ' : '') + 'High pollen levels detected. Allergy sufferers should take precautions.';
 
-        res.json({
-            aqi: data.european_aqi,
+        const result = {
+            aqi,
             aqiLevel,
             aqiColor,
-            pm25: data.pm2_5,
-            pm10: data.pm10,
-            uvIndex: data.uv_index,
-            pollen: {
-                birch: data.pollen_birch,
-                grass: data.pollen_grass,
-                olive: data.pollen_olive,
-                level: pollenLevel
-            },
+            pm25: current.pm2_5 || 0,
+            pm10: current.pm10 || 0,
+            uvIndex: current.uv_index || 0,
+            pollen: { birch, grass, olive, level: pollenLevel },
             warning,
             location: { lat, lon },
             isMockData: false
-        });
+        };
+
+        console.log('Sending result:', JSON.stringify(result));
+        return res.status(200).json(result);
+
     } catch (error) {
-        console.error('Air Quality API Failure - Returning Mock Data for Bengaluru:', error.message);
-        // Return highly structured mock data for Bengaluru (Luxury fallback)
-        res.json({
-            aqi: 42,
-            aqiLevel: "Fair",
-            aqiColor: "#ffff00",
-            pm25: 18.5,
-            pm10: 34.2,
-            uvIndex: 6,
-            pollen: {
-                birch: 12,
-                grass: 24,
-                olive: 5,
-                level: "Moderate"
-            },
-            warning: "Note: Live geolocation unavailable. Showing standard air quality profile for Bengaluru City.",
-            location: { lat: 12.9716, lon: 77.5946 },
-            isMockData: true,
-            cityName: "Bengaluru"
+        console.error('Air quality fetch error:', error.message);
+        console.error('Full error:', error);
+
+        // ALWAYS return 200 with mock data — never crash
+        return res.status(200).json({
+            aqi: 35,
+            aqiLevel: 'Fair',
+            aqiColor: '#ffff00',
+            pm25: 14,
+            pm10: 24,
+            uvIndex: 4,
+            pollen: { birch: 6, grass: 9, olive: 4, level: 'Low' },
+            warning: null,
+            location: { lat, lon },
+            isMockData: true
         });
     }
 };

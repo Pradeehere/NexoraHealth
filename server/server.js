@@ -66,6 +66,16 @@ app.use('/api/ai', require('./routes/aiRoutes'));
 app.use('/api/air-quality', require('./routes/airQualityRoutes'));
 app.use('/api/exercises', require('./routes/exerciseRoutes'));
 
+app.get('/api/air-quality-test', async (req, res) => {
+    const axios = require('axios');
+    try {
+        const response = await axios.get('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=12.9716&longitude=77.5946&current=european_aqi,pm2_5,pm10&timezone=auto', { timeout: 8000 });
+        res.json({ success: true, data: response.data });
+    } catch (e) {
+        res.json({ success: false, error: e.message });
+    }
+});
+
 // Production Seeding Route - Visit this to setup Atlas DB
 app.get('/api/init-db', async (req, res) => {
     try {
