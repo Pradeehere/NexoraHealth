@@ -42,13 +42,25 @@ app.use((req, res, next) => {
 // Rate limiting
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+    max: 500, // Increase from 100 to 500
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 app.use('/api/', apiLimiter);
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10,
+    max: 50, // Increase from 10 to 50
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        status: 429,
+        message: 'Too many login attempts. Please wait a few minutes and try again.'
+    },
+    skip: (req) => {
+        // Skip rate limiting in development
+        return process.env.NODE_ENV === 'development';
+    }
 });
 app.use('/api/auth/', authLimiter);
 

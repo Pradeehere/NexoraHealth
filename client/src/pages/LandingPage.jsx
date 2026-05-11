@@ -21,43 +21,6 @@ const LandingPage = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
 
-    // PWA Install State
-    const [deferredPrompt, setDeferredPrompt] = useState(null);
-    const [showInstallBanner, setShowInstallBanner] = useState(false);
-    const [openFaq, setOpenFaq] = useState(null);
-
-    useEffect(() => {
-        const handleBeforeInstallPrompt = (e) => {
-            e.preventDefault();
-            setDeferredPrompt(e);
-            setShowInstallBanner(true);
-        };
-
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-        return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-        };
-    }, []);
-
-    const handleInstallClick = async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            setShowInstallBanner(false);
-        }
-        setDeferredPrompt(null);
-    };
-
-    const handlePWAClick = () => {
-        if (deferredPrompt) {
-            handleInstallClick();
-        } else {
-            alert('PWA is already installed or not supported on this browser.');
-        }
-    };
-
     const toggleFaq = (index) => {
         setOpenFaq(openFaq === index ? null : index);
     };
@@ -73,16 +36,6 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-white text-black font-jost selection:bg-black selection:text-brand-gold overflow-x-hidden pt-16">
             <LandingNavbar />
-            {/* PWA Banner */}
-            {showInstallBanner && (
-                <div className="bg-black text-white px-6 py-3 flex items-center justify-between sticky top-0 z-50">
-                    <span className="font-tenor uppercase tracking-widest text-xs md:text-sm">Install Nexora Health on your device</span>
-                    <div className="flex items-center gap-4">
-                        <button onClick={handleInstallClick} className="text-brand-gold font-tenor uppercase tracking-widest text-xs md:text-sm hover:underline">INSTALL</button>
-                        <button onClick={() => setShowInstallBanner(false)} className="text-white hover:text-brand-gold"><X size={16} /></button>
-                    </div>
-                </div>
-            )}
 
             {/* HERO SECTION */}
             <section className="min-h-[85vh] flex flex-col justify-center items-center px-4 py-20 text-center relative">
@@ -204,7 +157,7 @@ const LandingPage = () => {
                         icon={Smartphone}
                         title="PWA Support"
                         description="Install Nexora Health directly on your desktop or mobile as a snappy Progressive Web App."
-                        onClick={handlePWAClick}
+                        onClick={() => { }}
                     />
                 </div>
             </section>

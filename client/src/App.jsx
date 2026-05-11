@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import AirQualityPage from './pages/AirQualityPage';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import PWAInstallBanner from './components/common/PWAInstallBanner';
 
 function AppContent() {
   const location = useLocation();
@@ -104,6 +105,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <PWAInstallBanner />
       <AppContent />
     </Router>
   );
