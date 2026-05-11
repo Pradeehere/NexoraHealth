@@ -14,18 +14,23 @@ import HealthTracker from './pages/HealthTracker';
 import Reports from './pages/Reports';
 import BMIPage from './pages/BMIPage';
 import Profile from './pages/Profile';
+import AirQualityPage from './pages/AirQualityPage';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[var(--bg-primary)]">
-        <Toaster position="top-right" />
-        <Navbar />
-        <div className="flex flex-1 flex-col md:flex-row pb-16 md:pb-0">
-          <Sidebar />
-          <main className="flex-1 p-4 md:p-6 w-full max-w-[100vw]">
+      <div className="min-h-screen bg-[var(--bg-primary)] flex flex-col md:flex-row">
+        <Toaster position="top-right" gutter={8} containerStyle={{ zIndex: 50 }} />
+
+        {/* Sidebar - Fixed on desktop, Bottom Tab on mobile */}
+        <Sidebar />
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col transition-all duration-300 md:ml-64">
+          <Navbar />
+          <main className="flex-1 p-4 md:p-8 mt-16 pb-24 md:pb-8 max-w-[100vw] overflow-x-hidden">
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -53,6 +58,11 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/air-quality" element={
+                <ProtectedRoute>
+                  <AirQualityPage />
                 </ProtectedRoute>
               } />
               <Route path="/admin" element={

@@ -120,66 +120,81 @@ const Reports = () => {
             {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 print:break-inside-avoid">
                 {/* Chart 1: Calorie Trend */}
-                <div className="bg-white border border-black p-8 h-[400px]">
-                    <h3 className="font-tenor uppercase tracking-widest text-sm mb-6">Calorie Trend</h3>
-                    <ResponsiveContainer width="100%" height="90%">
-                        <AreaChart data={stats}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                            <defs>
-                                <linearGradient id="colorCal" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#C9A84C" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }} />
-                            <Area type="monotone" dataKey="calories" stroke="#C9A84C" fillOpacity={1} fill="url(#colorCal)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                <div className="chart-container h-[400px]">
+                    <h3 className="chart-title">Calorie Trend</h3>
+                    {stats.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="90%">
+                            <AreaChart data={stats}>
+                                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                <defs>
+                                    <linearGradient id="colorCal" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#C9A84C" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }} labelStyle={{ color: '#fff', marginBottom: '4px' }} itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }} />
+                                <Area type="monotone" dataKey="calories" stroke="#C9A84C" fillOpacity={1} fill="url(#colorCal)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="no-data-msg">NO DATA AVAILABLE<div className="no-data-hr"></div></div>
+                    )}
                 </div>
 
                 {/* Chart 2: Sleep Quality */}
-                <div className="bg-white border border-black p-8 h-[400px]">
-                    <h3 className="font-tenor uppercase tracking-widest text-sm mb-6">Sleep Quality</h3>
-                    <ResponsiveContainer width="100%" height="90%">
-                        <BarChart data={stats}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                            <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }} cursor={{ fill: '#f5f5f5' }} />
-                            <Bar dataKey="sleepHours" fill="#C9A84C" />
-                        </BarChart>
-                    </ResponsiveContainer>
+                <div className="chart-container h-[400px]">
+                    <h3 className="chart-title">Sleep Quality</h3>
+                    {stats.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="90%">
+                            <BarChart data={stats}>
+                                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }} labelStyle={{ color: '#fff', marginBottom: '4px' }} itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }} cursor={{ fill: 'rgba(201, 168, 76, 0.05)' }} />
+                                <Bar dataKey="sleepHours" fill="#C9A84C" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="no-data-msg">NO DATA AVAILABLE<div className="no-data-hr"></div></div>
+                    )}
                 </div>
 
                 {/* Chart 3: Weight Trend */}
-                <div className="bg-white border border-black p-8 h-[400px] lg:col-span-2">
-                    <h3 className="font-tenor uppercase tracking-widest text-sm mb-6">Weight Trend</h3>
-                    <ResponsiveContainer width="100%" height="90%">
-                        <LineChart data={stats}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                            <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <YAxis domain={['auto', 'auto']} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }} itemStyle={{ color: '#C9A84C' }} />
-                            <Line type="monotone" dataKey="weight" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 2, r: 4 }} activeDot={{ r: 6 }} />
-                        </LineChart>
-                    </ResponsiveContainer>
+                <div className="chart-container h-[400px] lg:col-span-2">
+                    <h3 className="chart-title">Weight Trend</h3>
+                    {stats.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="90%">
+                            <LineChart data={stats}>
+                                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                <YAxis domain={['auto', 'auto']} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }} labelStyle={{ color: '#fff', marginBottom: '4px' }} itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }} />
+                                <Line type="monotone" dataKey="weight" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 1, r: 3 }} activeDot={{ r: 5 }} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="no-data-msg">NO DATA AVAILABLE<div className="no-data-hr"></div></div>
+                    )}
                 </div>
 
-                {/* We just have 3 charts available in the original data structure (calories, sleep, weight). The 4th chart wasn't in original but user asked for "All 4 charts". Let's add Water. */}
                 {/* Chart 4: Water Intake */}
-                <div className="bg-white border border-black p-8 h-[400px] lg:col-span-2 print:break-inside-avoid">
-                    <h3 className="font-tenor uppercase tracking-widest text-sm mb-6">Water Intake</h3>
-                    <ResponsiveContainer width="100%" height="90%">
-                        <LineChart data={stats}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                            <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <YAxis domain={[0, 'auto']} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }} itemStyle={{ color: '#C9A84C' }} />
-                            <Line type="monotone" dataKey="waterIntake" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 2, r: 4 }} activeDot={{ r: 6 }} />
-                        </LineChart>
-                    </ResponsiveContainer>
+                <div className="chart-container h-[400px] lg:col-span-2 print:break-inside-avoid">
+                    <h3 className="chart-title">Water Intake</h3>
+                    {stats.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="90%">
+                            <LineChart data={stats}>
+                                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                <YAxis domain={[0, 'auto']} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                <Tooltip contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }} labelStyle={{ color: '#fff', marginBottom: '4px' }} itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }} />
+                                <Line type="monotone" dataKey="waterIntake" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 1, r: 3 }} activeDot={{ r: 5 }} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="no-data-msg">NO DATA AVAILABLE<div className="no-data-hr"></div></div>
+                    )}
                 </div>
             </div>
         </div>

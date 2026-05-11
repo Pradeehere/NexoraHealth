@@ -4,6 +4,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import { Brain, Flame, Droplets, Moon, Scale } from 'lucide-react';
 import axios from 'axios';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
+import AirQualityCard from '../components/dashboard/AirQualityCard';
 
 const Dashboard = () => {
     const { user } = useSelector((state) => state.auth);
@@ -96,11 +97,12 @@ const Dashboard = () => {
         <div className="space-y-8 animate-fade-in-up pb-12">
             <header className="bg-white border-b border-black pb-4 flex justify-between items-end">
                 <div>
-                    <h1 className="text-4xl md:text-5xl font-jost font-medium text-black tracking-tight">
+                    <h1 className="text-4xl md:text-5xl font-cormorant font-medium text-black tracking-tight uppercase">
                         Good Morning, {user.name.split(' ')[0]}
                     </h1>
+                    <div className="h-[2px] w-32 bg-brand-gold mt-2"></div>
                 </div>
-                <div className="font-jost small-caps text-sm text-[#555] tracking-widest uppercase">
+                <div className="font-tenor text-xs text-[#555] tracking-[0.2em] uppercase hidden md:block">
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </header>
@@ -113,14 +115,14 @@ const Dashboard = () => {
                     { label: "Sleep Hours", value: healthData?.sleepHours || 0, icon: Moon },
                     { label: "BMI", value: bmi, icon: Scale }
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white border border-black p-6 flex flex-col relative group hover:bg-black transition-colors duration-300">
+                    <div key={i} className="luxury-card p-6 flex flex-col relative group hover:bg-black transition-all duration-300">
                         <div className="flex justify-between items-start mb-6">
-                            <h3 className="font-jost text-sm text-gray-500 font-medium uppercase tracking-widest">{stat.label}</h3>
-                            <stat.icon className="text-black group-hover:text-white transition-colors w-5 h-5" strokeWidth={1.5} />
+                            <h3 className="font-tenor text-xs text-gray-500 font-bold uppercase tracking-[0.15em] group-hover:text-brand-gold transition-colors">{stat.label}</h3>
+                            <stat.icon className="text-black group-hover:text-brand-gold transition-colors w-5 h-5" strokeWidth={1} />
                         </div>
-                        <p className="font-jost font-medium text-5xl text-black group-hover:text-white transition-colors">{stat.value}</p>
+                        <p className="font-cormorant font-bold text-5xl text-black group-hover:text-white transition-colors">{stat.value}</p>
 
-                        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-gold"></div>
+                        <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-brand-gold group-hover:w-full transition-all duration-500"></div>
                     </div>
                 ))}
             </div>
@@ -128,50 +130,68 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Charts Column */}
                 <div className="lg:col-span-2 space-y-8">
-                    <div className="bg-white border border-black p-8 h-[400px]">
-                        <h3 className="font-jost text-sm uppercase tracking-widest text-gray-500 mb-8 font-medium">Calorie Trend (Last 7 Days)</h3>
-                        <ResponsiveContainer width="100%" height="85%">
-                            <LineChart data={weeklyData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                                <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }}
-                                    itemStyle={{ color: '#C9A84C' }}
-                                />
-                                <Line type="monotone" dataKey="calories" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 2, r: 4 }} activeDot={{ r: 6 }} />
-                            </LineChart>
-                        </ResponsiveContainer>
+                    <div className="chart-container h-[400px]">
+                        <h3 className="chart-title">Calorie Trend (Last 7 Days)</h3>
+                        {weeklyData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="85%">
+                                <LineChart data={weeklyData}>
+                                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                    <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                    <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
+                                        itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }}
+                                        labelStyle={{ color: '#fff', marginBottom: '4px' }}
+                                    />
+                                    <Line type="monotone" dataKey="calories" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 1, r: 3 }} activeDot={{ r: 5 }} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="no-data-msg">
+                                NO DATA AVAILABLE
+                                <div className="no-data-hr"></div>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="bg-white border border-black p-8 h-[400px]">
-                        <h3 className="font-jost text-sm uppercase tracking-widest text-gray-500 mb-8 font-medium">Sleep Quality (Last 7 Days)</h3>
-                        <ResponsiveContainer width="100%" height="85%">
-                            <BarChart data={weeklyData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                                <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                                <YAxis stroke="#000" tick={{ fontFamily: 'Jost', fontSize: 12 }} />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: '#000', borderColor: '#000', borderRadius: '0', color: '#fff' }}
-                                    cursor={{ fill: '#f5f5f5' }}
-                                    itemStyle={{ color: '#C9A84C' }}
-                                />
-                                <Bar dataKey="sleepHours" fill="#C9A84C" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                    <div className="chart-container h-[400px]">
+                        <h3 className="chart-title">Sleep Quality (Last 7 Days)</h3>
+                        {weeklyData.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="85%">
+                                <BarChart data={weeklyData}>
+                                    <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
+                                    <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
+                                    <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                    <Tooltip
+                                        contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
+                                        cursor={{ fill: 'rgba(201, 168, 76, 0.05)' }}
+                                        itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }}
+                                        labelStyle={{ color: '#fff', marginBottom: '4px' }}
+                                    />
+                                    <Bar dataKey="sleepHours" fill="#C9A84C" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="no-data-msg">
+                                NO DATA AVAILABLE
+                                <div className="no-data-hr"></div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* AI Insights Column */}
+                {/* AI Insights & Features Column */}
                 <div className="space-y-8">
-                    <div className="bg-white border border-black p-8">
+                    <AirQualityCard />
+
+                    <div className="luxury-card p-8">
                         <div className="flex items-center gap-3 mb-8">
-                            <Brain className="text-black w-6 h-6" strokeWidth={1.5} />
-                            <h3 className="font-jost font-medium text-lg text-black tracking-wide">NEXORA AI INSIGHTS</h3>
+                            <Brain className="text-black w-6 h-6" strokeWidth={1} />
+                            <h3 className="font-tenor font-bold text-xs text-black tracking-[0.2em] uppercase">NEXORA AI INSIGHTS</h3>
                         </div>
                         <ul className="space-y-6">
                             {aiSuggestions.map((tip, idx) => (
-                                <li key={idx} className="pl-4 border-l-2 border-black text-gray-700 font-jost text-base leading-relaxed">
+                                <li key={idx} className="pl-4 border-l-2 border-brand-gold text-gray-700 font-jost text-sm leading-relaxed">
                                     {tip}
                                 </li>
                             ))}

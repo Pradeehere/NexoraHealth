@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Jost:ital,wght@0,100..900;1,100..900&family=Tenor+Sans&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg-primary: #ffffff;
+  --brand-gold: #C9A84C;
+  --brand-dark: #000000;
+}
 
 * {
   border-radius: 0 !important;
@@ -8,8 +16,30 @@
 
 body {
   font-family: 'Jost', sans-serif;
-  background: #fff;
+  background: var(--bg-primary);
   color: #000;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-tenor {
+  font-family: 'Tenor Sans', sans-serif;
+}
+
+.font-jost {
+  font-family: 'Jost', sans-serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', serif;
 }
 
 ::selection {
@@ -22,5 +52,58 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C9A84C;
+  background: var(--brand-gold);
+}
+
+/* Custom UI Components */
+.luxury-card {
+  border: 1px solid #000;
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.luxury-card:hover {
+  transform: translateY(-2px);
+}
+
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  color: #000;
+  border-bottom: 2px solid var(--brand-gold);
+  width: fit-content;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.chart-container {
+  border: 1px solid #000;
+  padding: 1.5rem;
+  background: #fff;
+}
+
+.chart-title {
+  font-family: 'Tenor Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #000;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.no-data-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--brand-gold);
+  font-family: 'Tenor Sans', sans-serif;
+}
+
+.no-data-hr {
+  width: 50px;
+  height: 1px;
+  background-color: var(--brand-gold);
+  margin-top: 8px;
 }

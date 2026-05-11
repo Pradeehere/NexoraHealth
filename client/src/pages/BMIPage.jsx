@@ -47,55 +47,56 @@ const BMIPage = () => {
     return (
         <div className="space-y-8 animate-fade-in-up pb-16">
             <header className="bg-white border-b border-black pb-4">
-                <h1 className="text-4xl md:text-5xl font-jost font-medium text-black tracking-tight">
+                <h1 className="text-4xl md:text-5xl font-cormorant font-medium text-black tracking-tight uppercase">
                     BMI Calculator
                 </h1>
-                <p className="font-jost text-sm text-gray-400 mt-2">Calculate your Body Mass Index and track it on your dashboard.</p>
+                <div className="h-[2px] w-24 bg-brand-gold mt-2"></div>
+                <p className="font-tenor text-[10px] text-gray-400 uppercase tracking-[0.2em] mt-4">Calculate your personal metrics</p>
             </header>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
                 {/* Input Card */}
-                <div className="bg-white border border-black p-10 space-y-8">
-                    <div className="flex items-center gap-3 pb-6 border-b border-black">
-                        <Calculator className="text-black w-6 h-6" strokeWidth={1.5} />
-                        <h2 className="font-jost font-semibold text-black text-xl tracking-wide">Enter Your Details</h2>
+                <div className="luxury-card p-10 space-y-8">
+                    <div className="flex items-center gap-3 pb-6 border-b border-black/10">
+                        <Calculator className="text-black w-5 h-5" strokeWidth={1} />
+                        <h2 className="font-tenor font-bold text-xs text-black uppercase tracking-[0.2em]">Personal Data</h2>
                     </div>
 
                     <div>
-                        <label className="block font-jost text-xs text-gray-400 uppercase tracking-widest mb-3">Weight (kg)</label>
+                        <label className="block font-tenor text-[10px] text-gray-400 uppercase tracking-widest mb-3 italic">Weight (kg)</label>
                         <input
                             type="number"
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
-                            placeholder="e.g. 75"
-                            className="w-full border-b-2 border-black px-0 py-3 font-jost text-3xl text-black focus:outline-none focus:border-brand-gold transition-colors bg-transparent"
+                            placeholder="75"
+                            className="w-full border-b-2 border-black px-0 py-3 font-cormorant font-bold text-4xl text-black focus:outline-none focus:border-brand-gold transition-colors bg-transparent placeholder:text-gray-100"
                         />
                     </div>
 
                     <div>
-                        <label className="block font-jost text-xs text-gray-400 uppercase tracking-widest mb-3">Height (cm)</label>
+                        <label className="block font-tenor text-[10px] text-gray-400 uppercase tracking-widest mb-3 italic">Height (cm)</label>
                         <input
                             type="number"
                             value={heightCm}
                             onChange={(e) => setHeightCm(e.target.value)}
-                            placeholder="e.g. 173"
-                            className="w-full border-b-2 border-black px-0 py-3 font-jost text-3xl text-black focus:outline-none focus:border-brand-gold transition-colors bg-transparent"
+                            placeholder="173"
+                            className="w-full border-b-2 border-black px-0 py-3 font-cormorant font-bold text-4xl text-black focus:outline-none focus:border-brand-gold transition-colors bg-transparent placeholder:text-gray-100"
                         />
                     </div>
 
                     <button
                         onClick={handleCalculate}
-                        className="w-full bg-black text-white font-jost uppercase tracking-widest text-sm py-5 hover:bg-brand-gold transition-colors flex items-center justify-center gap-3"
+                        className="w-full bg-black text-white font-tenor uppercase tracking-[0.3em] text-xs py-6 hover:bg-brand-gold transition-all duration-300 flex items-center justify-center gap-3 group"
                     >
                         {saved ? (
-                            <><CheckCircle size={20} /> Saved to Dashboard!</>
+                            <><CheckCircle size={18} className="text-white" /> SAVED TO DATABASE</>
                         ) : (
-                            <><Calculator size={20} /> Calculate My BMI</>
+                            <><Calculator size={18} className="group-hover:rotate-12 transition-transform" /> ANALYZE METRICS</>
                         )}
                     </button>
 
-                    <p className="text-xs text-gray-400 font-jost text-center leading-relaxed">
-                        Your result will automatically update the BMI card on your Dashboard.
+                    <p className="text-[10px] text-gray-400 font-tenor text-center tracking-widest uppercase opacity-60">
+                        Your result will automatically synchronize with your Dashboard.
                     </p>
                 </div>
 
@@ -105,53 +106,29 @@ const BMIPage = () => {
                         <>
                             {/* Big Result */}
                             <div
-                                className="border p-12 text-center flex-1 flex flex-col items-center justify-center transition-all duration-500"
-                                style={{ borderColor: bmiResult.color, backgroundColor: bmiResult.bg }}
+                                className="luxury-card p-12 text-center flex-1 flex flex-col items-center justify-center transition-all duration-500 bg-white"
+                                style={{ borderLeft: `8px solid ${bmiResult.color}` }}
                             >
-                                <div className="font-jost text-[100px] font-medium leading-none" style={{ color: bmiResult.color }}>
+                                <div className="font-cormorant text-[120px] font-bold leading-none" style={{ color: bmiResult.color }}>
                                     {bmiResult.value}
                                 </div>
-                                <div className="font-tenor uppercase tracking-[0.3em] text-lg mt-4" style={{ color: bmiResult.color }}>
+                                <div className="font-tenor uppercase tracking-[0.4em] text-sm font-bold mt-4" style={{ color: bmiResult.color }}>
                                     {bmiResult.label}
                                 </div>
-                                <p className="font-jost text-sm text-gray-500 mt-4 max-w-xs">
-                                    {bmiResult.value < 18.5 && "You're below the healthy range. Consider increasing caloric intake."}
-                                    {bmiResult.value >= 18.5 && bmiResult.value < 25 && "Great! You're in the healthy BMI range. Keep it up!"}
-                                    {bmiResult.value >= 25 && bmiResult.value < 30 && "Slightly above healthy range. Moderate exercise can help."}
-                                    {bmiResult.value >= 30 && "Consider consulting a health professional for a personalized plan."}
+                                <p className="font-jost text-sm text-gray-500 mt-8 max-w-xs leading-relaxed italic border-t border-black/5 pt-6">
+                                    {bmiResult.value < 18.5 && "Sector: Underweight. Strategic caloric surplus recommended."}
+                                    {bmiResult.value >= 18.5 && bmiResult.value < 25 && "Sector: Optimal. Your biometric profile is maintained flawlessly."}
+                                    {bmiResult.value >= 25 && bmiResult.value < 30 && "Sector: Elevated. Precision physical training advised."}
+                                    {bmiResult.value >= 30 && "Sector: Critical. Urgent wellness intervention recommended."}
                                 </p>
-                            </div>
-
-                            {/* Scale */}
-                            <div className="bg-white border border-black p-6">
-                                <h3 className="font-jost text-xs uppercase tracking-widest text-gray-400 mb-4">BMI Scale</h3>
-                                <div className="flex h-4 w-full overflow-hidden rounded-full">
-                                    {zones.map((z) => (
-                                        <div key={z.label} style={{ width: '25%', backgroundColor: z.color }} className="h-full" />
-                                    ))}
-                                </div>
-                                {/* Indicator */}
-                                <div className="relative w-full h-4 mt-1">
-                                    <div
-                                        className="absolute -top-1 w-4 h-4 rounded-full border-2 border-white shadow-lg transition-all duration-700"
-                                        style={{ left: `calc(${bmiPercent}% - 8px)`, backgroundColor: bmiResult.color }}
-                                    />
-                                </div>
-                                <div className="flex justify-between mt-3">
-                                    {zones.map((z) => (
-                                        <div key={z.label} className="text-center" style={{ width: '25%' }}>
-                                            <div className="font-jost text-[10px] text-gray-500">{z.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                         </>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-full border border-dashed border-gray-300 p-16 text-center bg-white">
-                            <Calculator className="text-gray-200 w-24 h-24 mb-6" strokeWidth={0.6} />
-                            <h3 className="font-jost font-medium text-gray-400 text-xl mb-2">No Result Yet</h3>
-                            <p className="font-jost text-gray-400 text-sm leading-relaxed max-w-xs">
-                                Enter your weight and height on the left, then tap Calculate to see your personalized BMI result.
+                        <div className="luxury-card flex flex-col items-center justify-center h-full border-dashed border-gray-200 p-16 text-center bg-gray-50/30">
+                            <Calculator className="text-gray-200 w-24 h-24 mb-6" strokeWidth={0.5} />
+                            <h3 className="font-tenor font-bold text-gray-400 text-xs tracking-widest uppercase mb-4">Awaiting Calculation</h3>
+                            <p className="font-jost text-gray-400 text-xs italic leading-relaxed max-w-xs">
+                                Input your current statistics to generate a comprehensive Body Mass Index analysis.
                             </p>
                         </div>
                     )}
