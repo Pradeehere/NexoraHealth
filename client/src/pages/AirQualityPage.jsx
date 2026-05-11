@@ -83,9 +83,9 @@ const AirQualityPage = () => {
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-black pb-8">
                 <div>
                     <h1 className="text-5xl font-cormorant italic font-bold tracking-tight uppercase">Air Quality Monitor</h1>
-                    <div className="flex items-center gap-2 mt-4 text-gray-500 font-tenor text-xs tracking-widest">
-                        <MapPin size={14} className="text-brand-gold" />
-                        <span>Detecting Atmosphere: {data.location?.lat.toFixed(4)}, {data.location?.lon.toFixed(4)}</span>
+                    <div className="flex items-center gap-2 mt-4 text-gray-500 font-tenor text-lg tracking-widest leading-loose">
+                        <MapPin size={18} className="text-brand-gold" />
+                        <span>Detecting Atmosphere: {Number(data.location?.lat || 0).toFixed(4)}, {Number(data.location?.lon || 0).toFixed(4)}</span>
                     </div>
                 </div>
                 <button

@@ -117,8 +117,8 @@ const Dashboard = () => {
                 ].map((stat, i) => (
                     <div key={i} className="luxury-card p-6 flex flex-col relative group hover:bg-black transition-all duration-300">
                         <div className="flex justify-between items-start mb-3">
-                            <h3 className="font-tenor text-base text-brand-gold font-normal uppercase tracking-[0.2em]">{stat.label}</h3>
-                            <stat.icon className="text-black group-hover:text-brand-gold transition-colors w-5 h-5" strokeWidth={1} />
+                            <h3 className="font-tenor text-xl text-brand-gold font-medium uppercase tracking-[0.2em]">{stat.label}</h3>
+                            <stat.icon className="text-black group-hover:text-brand-gold transition-colors w-6 h-6" strokeWidth={1} />
                         </div>
                         <div className="flex items-baseline">
                             <p className="font-cormorant font-bold text-5xl text-black group-hover:text-white transition-colors leading-none">{stat.value}</p>
@@ -134,7 +134,7 @@ const Dashboard = () => {
                 {/* Charts Column */}
                 <div className="lg:col-span-2 space-y-6">
                     <div className="chart-container h-fit">
-                        <h3 className="font-tenor text-base text-brand-gold font-normal uppercase tracking-[0.2em] mb-4">Calorie Trend (Last 7 Days)</h3>
+                        <h3 className="font-tenor text-xl text-brand-gold font-medium uppercase tracking-[0.2em] mb-6">Calorie Trend (Last 7 Days)</h3>
                         {weeklyData.length > 0 ? (
                             <ResponsiveContainer width="100%" height={300}>
                                 <LineChart data={weeklyData}>
@@ -158,7 +158,7 @@ const Dashboard = () => {
                     </div>
 
                     <div className="chart-container h-fit">
-                        <h3 className="font-tenor text-base text-brand-gold font-normal uppercase tracking-[0.2em] mb-4">Sleep Quality (Last 7 Days)</h3>
+                        <h3 className="font-tenor text-xl text-brand-gold font-medium uppercase tracking-[0.2em] mb-6">Sleep Quality (Last 7 Days)</h3>
                         {weeklyData.length > 0 ? (
                             <ResponsiveContainer width="100%" height={300}>
                                 <BarChart data={weeklyData}>
@@ -190,7 +190,7 @@ const Dashboard = () => {
                     <div className="luxury-card p-8">
                         <div className="flex items-center gap-3 mb-6">
                             <Brain className="text-brand-gold w-6 h-6" strokeWidth={1} />
-                            <h3 className="font-tenor text-base text-brand-gold font-normal uppercase tracking-[0.2em]">NEXORA AI INSIGHTS</h3>
+                            <h3 className="font-tenor text-xl text-brand-gold font-medium uppercase tracking-[0.2em]">NEXORA AI INSIGHTS</h3>
                         </div>
                         <ul className="space-y-6">
                             {aiSuggestions.map((tip, idx) => (
