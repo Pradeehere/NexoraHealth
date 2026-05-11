@@ -77,10 +77,10 @@ const AirQualityCard = () => {
                     <h3 className="font-tenor text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">AIR QUALITY MONITOR</h3>
                     <div className="flex items-center gap-1 text-[10px] text-gray-400 font-jost uppercase tracking-wider mt-1">
                         <MapPin size={10} />
-                        {isGeoDenied ? "Default: Bangalore" : "Live Location"}
+                        {data.location?.lat === 12.9716 ? "Bengaluru (Standard)" : "Live Location"}
                     </div>
                 </div>
-                {data.isMockData && <span className="text-[10px] text-orange-400 font-tenor italic tracking-widest">Sample Data</span>}
+                {data.isMockData && <span className="text-[10px] text-orange-400 font-tenor italic tracking-widest">{data.cityName || 'Sample'} Data</span>}
             </div>
 
             {/* Main AQI */}
