@@ -20,6 +20,7 @@ const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
 const LandingPage = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
+    const [openFaq, setOpenFaq] = useState(null);
 
     const toggleFaq = (index) => {
         setOpenFaq(openFaq === index ? null : index);
