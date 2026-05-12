@@ -104,14 +104,11 @@ const Dashboard = () => {
             {/* Top Banner with Stats Overlay */}
             <div className="relative h-64 md:h-80 bg-black overflow-hidden">
                 <img
-                    src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1600&q=80"
+                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80"
                     alt="Wellness"
                     className="w-full h-full object-cover opacity-60 scale-105 hover:scale-100 transition-transform duration-700"
                 />
-                <div 
-                    className="absolute inset-0" 
-                    style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.5) 100%)' }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
                 <div className="absolute bottom-10 left-10 right-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div className="animate-slide-up">

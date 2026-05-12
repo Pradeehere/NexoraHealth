@@ -110,11 +110,7 @@ const LandingPage = () => {
 
                     <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gray-100 border border-black overflow-hidden shadow-2xl">
                         {/* The Yoga Image */}
-                        <img
-                            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80"
-                            alt="Nexora Health Workout"
-                            className="w-full h-full object-cover mix-blend-multiply opacity-90"
-                        />
+                        <img src="/images/hero-luxury.jpg" alt="Nexora Health Hero" className="w-full h-full object-cover mix-blend-multiply" />
                         <div className="absolute inset-0 bg-gradient-to-tr from-brand-gold/10 to-transparent mix-blend-overlay"></div>
                     </div>
                 </div>
@@ -200,7 +196,7 @@ const LandingPage = () => {
             {/* CTA SECTION */}
             <section className="relative text-white py-40 px-6 text-center border-t border-black overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80" alt="Wellness Journey" className="w-full h-full object-cover opacity-60" />
+                    <img src="/images/custom-yoga.png" alt="Wellness Journey" className="w-full h-full object-cover opacity-60" />
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
                 <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
