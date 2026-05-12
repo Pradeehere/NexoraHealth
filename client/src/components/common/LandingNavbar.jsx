@@ -22,17 +22,18 @@ const LandingNavbar = () => {
             <div className="hidden md:flex items-center gap-6">
                 <Link
                     to="/login"
-                    className="px-8 py-2 border border-white text-white font-tenor text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300"
+                    className="px-8 py-2 border border-white text-white font-jakarta text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300"
                 >
                     Login
                 </Link>
                 <Link
                     to="/register"
-                    className="px-8 py-2 bg-white text-black font-tenor text-[10px] uppercase tracking-[0.2em] border border-white hover:bg-brand-gold hover:border-brand-gold hover:text-white transition-all duration-300"
+                    className="px-8 py-2 bg-white text-black font-jakarta text-[10px] uppercase tracking-[0.2em] border border-white hover:bg-brand-gold hover:border-brand-gold hover:text-white transition-all duration-300"
                 >
                     Register
                 </Link>
             </div>
+
 
             {/* Mobile Menu Toggle */}
             <button
@@ -47,18 +48,19 @@ const LandingNavbar = () => {
                 <div className="absolute top-16 left-0 w-full bg-black border-b border-white/10 py-6 flex flex-col items-center gap-6 animate-fade-in md:hidden">
                     <Link
                         to="/login"
-                        className="font-tenor text-xs uppercase tracking-[0.2em] text-white hover:text-brand-gold"
+                        className="font-jakarta text-xs uppercase tracking-[0.2em] text-white hover:text-brand-gold"
                         onClick={() => setIsOpen(false)}
                     >
                         Login
                     </Link>
                     <Link
                         to="/register"
-                        className="px-10 py-3 bg-white text-black font-tenor text-xs uppercase tracking-[0.2em] hover:bg-brand-gold hover:text-white transition-all duration-300"
+                        className="px-10 py-3 bg-white text-black font-jakarta text-xs uppercase tracking-[0.2em] hover:bg-brand-gold hover:text-white transition-all duration-300"
                         onClick={() => setIsOpen(false)}
                     >
                         Register
                     </Link>
+
                 </div>
             )}
         </nav>

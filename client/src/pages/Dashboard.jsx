@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { Brain, Flame, Droplets, Moon, Scale } from 'lucide-react';
+import { Brain, Flame, Droplets, Moon, Scale, Sparkles } from 'lucide-react';
 import axios from 'axios';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import HealthScoreRing from '../components/dashboard/HealthScoreRing';
@@ -76,7 +76,12 @@ const Dashboard = () => {
                 "Consider adding 15 minutes of cardio to burn those extra calories.",
                 "Your sleep pattern shows slight irregularity; aim for 8 hours tonight.",
                 "Great job maintaining your weight target!",
-                "Consider practicing mindfulness to improve your daily mood score."
+                "Consider practicing mindfulness to improve your daily mood score.",
+                "Add a protein source to every meal to stay fuller longer and support muscle maintenance.",
+                "Practice 5 minutes of deep breathing or meditation before bed to improve sleep quality.",
+                "Limit screen time 1 hour before sleep — blue light suppresses melatonin production.",
+                "Include at least 3 different colored vegetables in your meals today.",
+                "Do 20 minutes of moderate exercise today — even a brisk walk counts."
             ]);
 
             setIsLoading(false);
@@ -94,178 +99,183 @@ const Dashboard = () => {
     const storedBMI = (() => { try { const s = localStorage.getItem('nexora_bmi'); return s ? JSON.parse(s).value : null; } catch { return null; } })();
     const bmi = storedBMI ?? (user.weight && user.height ? (user.weight / Math.pow(user.height / 100, 2)).toFixed(1) : 0);
 
-    const handleUpdate = () => {
-        fetchDashboardData();
-    };
-
     return (
-        <div className="space-y-8 animate-fade-in-up pb-12">
-            <header className="bg-white border-b border-black pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-                <div>
-                    <h1 className="text-[36px] md:text-[52px] font-cormorant font-medium text-black tracking-tight italic leading-tight">
-                        Good Morning, {user.name.split(' ')[0]}
-                    </h1>
-                    <div className="h-[2px] w-32 bg-brand-gold mt-2"></div>
-                </div>
-                <div className="font-jost text-[15px] text-[#666] tracking-[0.05em] uppercase">
-                    {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                </div>
-            </header>
-
-            {/* AI Health Score Ring - Hero Element */}
-            <HealthScoreRing />
-
-            {/* Top Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* CALORIES */}
-                <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>CALORIES TODAY</p>
-                    <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.calories || 0}</p>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KCAL</span>
-                    </div>
-                </div>
-
-                {/* WATER TRACKER */}
-                <WaterTracker 
-                    current={healthData?.waterIntake || 0} 
-                    goal={8} 
-                    onUpdate={(val) => setHealthData(prev => ({...prev, waterIntake: val}))}
-                    recordId={healthData?._id}
+        <div className="min-h-screen bg-white">
+            {/* Top Banner with Stats Overlay */}
+            <div className="relative h-64 md:h-80 bg-black overflow-hidden">
+                <img
+                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80"
+                    alt="Wellness"
+                    className="w-full h-full object-cover opacity-60 scale-105 hover:scale-100 transition-transform duration-700"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-                {/* SLEEP */}
-                <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>SLEEP HOURS</p>
-                    <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.sleepHours || 0}</p>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>HRS</span>
+                <div className="absolute bottom-10 left-10 right-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div className="animate-slide-up">
+                        <h1 className="text-[36px] md:text-[48px] font-cormorant font-medium text-white tracking-tight italic leading-tight">
+                            Good Morning, {user?.name?.split(' ')[0]}
+                        </h1>
+                        <p className="text-white/70 font-inter text-[15px] tracking-wide mt-2 uppercase">
+                            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                        </p>
                     </div>
-                </div>
 
-                {/* BMI */}
-                <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>BMI INDEX</p>
-                    <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{bmi}</p>
-                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KG/M²</span>
+                    <div className="flex gap-4 md:gap-8 bg-white/10 backdrop-blur-md p-6 border border-white/20 animate-fade-in">
+                        {[
+                            { label: 'CALORIES', val: healthData?.calories || 0, unit: 'kcal' },
+                            { label: 'WATER', val: healthData?.waterIntake || 0, unit: 'glasses' },
+                            { label: 'SLEEP', val: healthData?.sleepHours || 0, unit: 'hrs' },
+                        ].map((stat, i) => (
+                            <div key={i} className="text-center min-w-[80px]">
+                                <p className="text-[11px] font-inter font-bold text-brand-gold tracking-[0.2em] mb-1 uppercase">{stat.label}</p>
+                                <p className="text-2xl font-cormorant text-white">{stat.val}<span className="text-[10px] ml-1 opacity-60 font-inter">{stat.unit}</span></p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Charts Column */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="chart-container h-fit" style={{ border: '1px solid #000', padding: '32px' }}>
-                        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>CALORIE TREND (LAST 7 DAYS)</h3>
-                        {weeklyData.length > 0 ? (
-                            <div style={{ width: '100%', minHeight: 0 }}>
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <LineChart data={weeklyData}>
-                                        <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
-                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10, textTransform: 'uppercase' }} />
-                                        <YAxis stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10 }} />
-                                        <Tooltip
-                                            contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
-                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Inter', textTransform: 'uppercase', fontSize: '10px' }}
-                                            labelStyle={{ color: '#fff', marginBottom: '4px' }}
-                                        />
-                                        <Line type="monotone" dataKey="calories" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 1, r: 3 }} activeDot={{ r: 5 }} />
-                                    </LineChart>
-                                </ResponsiveContainer>
-                            </div>
-                        ) : (
-                            <div className="no-data-msg">
-                                <p style={{ fontFamily: 'DM Serif Display', color: '#C9A84C' }}>NO DATA AVAILABLE</p>
-                                <div className="no-data-hr"></div>
-                            </div>
-                        )}
-                    </div>
+            <div className="p-8 md:p-12 max-w-[1600px] mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                    <div className="chart-container h-fit" style={{ border: '1px solid #000', padding: '32px' }}>
-                        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>SLEEP QUALITY (LAST 7 DAYS)</h3>
-                        {weeklyData.length > 0 ? (
-                            <div style={{ width: '100%', minHeight: 0 }}>
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart data={weeklyData}>
-                                        <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
-                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10, textTransform: 'uppercase' }} />
-                                        <YAxis stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10 }} />
-                                        <Tooltip
-                                            contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
-                                            cursor={{ fill: 'rgba(201, 168, 76, 0.05)' }}
-                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Inter', textTransform: 'uppercase', fontSize: '10px' }}
-                                            labelStyle={{ color: '#fff', marginBottom: '4px' }}
-                                        />
-                                        <Bar dataKey="sleepHours" fill="#C9A84C" />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                    {/* Left Column - Main Trackers */}
+                    <div className="lg:col-span-8 space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                                <WaterTracker 
+                                    current={healthData?.waterIntake || 0} 
+                                    goal={8} 
+                                    onUpdate={(val) => setHealthData(prev => ({...prev, waterIntake: val}))}
+                                    recordId={healthData?._id}
+                                />
                             </div>
-                        ) : (
-                            <div className="no-data-msg">
-                                <p style={{ fontFamily: 'DM Serif Display', color: '#C9A84C' }}>NO DATA AVAILABLE</p>
-                                <div className="no-data-hr"></div>
+                            <div className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                                <MoodTracker 
+                                    todayMood={healthData?.mood} 
+                                    onMoodSelect={(val) => setHealthData(prev => ({...prev, mood: val}))}
+                                    recordId={healthData?._id}
+                                />
                             </div>
-                        )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <MoodTracker 
-                            todayMood={healthData?.mood} 
-                            onMoodSelect={(val) => setHealthData(prev => ({...prev, mood: val}))}
-                            recordId={healthData?._id}
-                        />
-                        <StreakCard />
-                    </div>
-                </div>
-
-                {/* AI Insights Column */}
-                <div className="space-y-6">
-                    <div className="border border-black p-8 bg-white h-full max-h-[1000px] flex flex-col">
-                        <div className="flex items-center gap-3 mb-6 flex-shrink-0">
-                            <Brain className="text-brand-gold w-6 h-6" strokeWidth={1} />
-                            <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', margin: 0, fontWeight: 400 }}>NEXORA AI INSIGHTS</h3>
                         </div>
-                        <div className="overflow-y-auto flex-1 pr-4 custom-scrollbar" style={{ maxHeight: '800px' }}>
-                            <ul className="space-y-6">
-                                {aiSuggestions.slice(0, 10).map((tip, idx) => (
-                                    <li key={idx} className="pl-4 border-l-[3px] border-brand-gold relative">
-                                        <span style={{ 
-                                            fontFamily: 'DM Serif Display, serif', 
-                                            fontSize: '13px', 
-                                            color: '#C9A84C', 
-                                            display: 'block',
-                                            marginBottom: '4px'
-                                        }}>
-                                            {(idx + 1).toString().padStart(2, '0')}
-                                        </span>
-                                        <p style={{ 
-                                            fontFamily: 'Inter, sans-serif', 
-                                            fontSize: '15px', 
-                                            color: '#333', 
-                                            lineHeight: 1.8 
-                                        }}>
-                                            {String(tip)}
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="md:col-span-1 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                                <StreakCard />
+                            </div>
+                            <div className="md:col-span-2 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                                <div className="border border-black p-8 h-full bg-white group hover:border-brand-gold transition-colors duration-500">
+                                    <div className="flex justify-between items-center mb-8">
+                                        <p className="text-[12px] font-inter font-semibold text-brand-gold tracking-[0.15em] uppercase">ACTIVITY TRENDS</p>
+                                        <div className="flex gap-4">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-2 h-2 bg-black"></div>
+                                                <span className="text-[10px] font-inter uppercase tracking-widest text-gray-400">Calories</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-2 h-2 bg-brand-gold"></div>
+                                                <span className="text-[10px] font-inter uppercase tracking-widest text-gray-400">Sleep</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="h-[240px] w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <LineChart data={weeklyData}>
+                                                <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.05} />
+                                                <XAxis 
+                                                    dataKey="date" 
+                                                    tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { weekday: 'short' })} 
+                                                    stroke="#000" 
+                                                    tick={{ fontFamily: 'Inter', fontSize: 10 }} 
+                                                />
+                                                <YAxis stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10 }} />
+                                                <Tooltip
+                                                    contentStyle={{ backgroundColor: '#000', border: 'none', borderRadius: '0' }}
+                                                    itemStyle={{ color: '#C9A84C', fontFamily: 'Inter', fontSize: '12px' }}
+                                                    labelStyle={{ color: '#fff', fontFamily: 'Inter', fontSize: '10px', marginBottom: '4px' }}
+                                                />
+                                                <Line type="monotone" dataKey="calories" stroke="#000" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+                                                <Line type="monotone" dataKey="sleepHours" stroke="#C9A84C" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+                                            </LineChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Health Score Component */}
+                        <div className="animate-fade-in" style={{ animationDelay: '0.5s' }}>
+                            <HealthScoreRing />
+                        </div>
+                    </div>
+
+                    {/* Right Column - AI Insights */}
+                    <div className="lg:col-span-4">
+                        <div className="sticky top-8 space-y-8 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                            <div className="border border-black p-8 bg-white relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 -mr-16 -mt-16 rounded-full group-hover:scale-110 transition-transform duration-700" />
+
+                                <div className="relative z-10">
+                                    <div className="flex items-center gap-3 mb-8">
+                                        <div className="w-10 h-10 bg-black flex items-center justify-center text-brand-gold">
+                                            <Sparkles size={20} />
+                                        </div>
+                                        <p className="text-[12px] font-inter font-bold text-brand-gold tracking-[0.2em] uppercase">NEXORA AI INSIGHTS</p>
+                                    </div>
+
+                                    <div className="max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+                                        {aiSuggestions.length > 0 ? (
+                                            <div className="space-y-6">
+                                                {aiSuggestions.map((tip, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="group/tip p-4 border-l-2 border-brand-gold/30 hover:border-brand-gold bg-gray-50/50 hover:bg-white transition-all duration-300"
+                                                    >
+                                                        <span className="text-[11px] font-inter font-bold text-brand-gold/50 group-hover/tip:text-brand-gold tracking-widest uppercase mb-2 block">
+                                                            Tip {(idx + 1).toString().padStart(2, '0')}
+                                                        </span>
+                                                        <p className="text-[15px] font-inter text-[#333] leading-[1.8] font-normal">
+                                                            {tip}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="py-12 text-center">
+                                                <div className="w-12 h-12 border-2 border-brand-gold/20 border-t-brand-gold rounded-full animate-spin mx-auto mb-4" />
+                                                <p className="text-gray-400 font-jakarta text-xs uppercase tracking-widest">Analyzing your wellness data...</p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="mt-8 pt-8 border-t border-gray-100">
+                                        <p className="text-[10px] text-gray-400 font-jakarta italic tracking-wide">
+                                            Our AI analyzes your sleep, nutrition, and activity patterns to provide high-precision health optimizations.
                                         </p>
-                                    </li>
-                                ))}
-                            </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Motivational Card */}
+                            <div className="bg-black p-8 text-center group cursor-pointer overflow-hidden relative">
+                                <div className="absolute inset-0 bg-brand-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <p className="text-brand-gold font-cormorant italic text-2xl mb-4 relative z-10">"Health is the ultimate luxury."</p>
+                                <div className="h-[1px] w-12 bg-brand-gold/50 mx-auto group-hover:w-24 transition-all duration-500 relative z-10" />
+                            </div>
                         </div>
-                        <style>{`
-                            .custom-scrollbar::-webkit-scrollbar {
-                                width: 3px;
-                            }
-                            .custom-scrollbar::-webkit-scrollbar-thumb {
-                                background-color: #C9A84C;
-                            }
-                        `}</style>
                     </div>
+
                 </div>
             </div>
+            <style>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 3px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background-color: #C9A84C;
+                }
+            `}</style>
         </div>
     );
-
 };
 
 export default Dashboard;
-

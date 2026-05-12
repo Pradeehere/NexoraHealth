@@ -176,5 +176,182 @@ const generateMealPlan = async (req, res) => {
   });
 };
 
-module.exports = { getAiSuggestions, getHealthScore, generateMealPlan };
+const generateWorkoutPlan = async (req, res) => {
+  const { fitnessGoal = 'Stay Active', fitnessLevel = 'Beginner', 
+          daysPerWeek = 3, duration = 45, equipment = 'No Equipment',
+          bmi = 22 } = req.body;
+
+  try {
+    if (process.env.OPENAI_API_KEY && !process.env.OPENAI_API_KEY.includes('dummy')) {
+      const { default: OpenAI } = await import('openai');
+      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+      const prompt = `Create a 7-day personalized workout plan for someone with:
+        BMI: ${bmi}, Goal: ${fitnessGoal}, Level: ${fitnessLevel}, 
+        Days/week: ${daysPerWeek}, Duration: ${duration} mins, Equipment: ${equipment}.
+        
+        Respond ONLY with valid JSON:
+        {
+          "days": [
+            {
+              "day": "Monday",
+              "isRest": false,
+              "workoutName": "Upper Body Strength",
+              "type": "Strength",
+              "duration": 45,
+              "caloriesBurned": 300,
+              "exercises": [
+                { "name": "Push-ups", "sets": 3, "reps": "12 reps", "note": "Keep core tight" }
+              ],
+              "tip": "Focus on form over speed"
+            }
+          ],
+          "totalWorkouts": 4,
+          "totalMinutes": 180,
+          "totalCalories": 1200,
+          "focusArea": "Full Body",
+          "advice": "one overall advice tip"
+        }`;
+
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 2000
+      });
+      const json = JSON.parse(
+        completion.choices[0].message.content.replace(/```json|```/g, '').trim()
+      );
+      return res.status(200).json(json);
+    }
+  } catch(e) {
+    console.log('OpenAI failed, using smart mock:', e.message);
+  }
+
+  // Smart mock based on inputs
+  const restDays = 7 - daysPerWeek;
+  const workoutDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  
+  const workoutsByGoal = {
+    'Weight Loss': [
+      { name: 'HIIT Cardio Blast', type: 'Cardio', cal: 400,
+        exercises: [
+          { name: 'Jumping Jacks', sets: 3, reps: '45 seconds', note: 'Keep pace high' },
+          { name: 'Burpees', sets: 3, reps: '10 reps', note: 'Full extension at top' },
+          { name: 'Mountain Climbers', sets: 3, reps: '30 seconds', note: 'Core engaged' },
+          { name: 'High Knees', sets: 3, reps: '45 seconds', note: 'Drive knees up' },
+        ]},
+      { name: 'Full Body Circuit', type: 'Circuit', cal: 350,
+        exercises: [
+          { name: 'Squat Jumps', sets: 3, reps: '12 reps', note: 'Land softly' },
+          { name: 'Push-ups', sets: 3, reps: '15 reps', note: 'Chest to floor' },
+          { name: 'Reverse Lunges', sets: 3, reps: '10 each leg', note: 'Keep torso upright' },
+          { name: 'Plank Hold', sets: 3, reps: '40 seconds', note: 'Squeeze glutes' },
+        ]},
+      { name: 'Core & Cardio', type: 'Mixed', cal: 300,
+        exercises: [
+          { name: 'Bicycle Crunches', sets: 3, reps: '20 reps', note: 'Slow and controlled' },
+          { name: 'Leg Raises', sets: 3, reps: '15 reps', note: 'Lower back flat' },
+          { name: 'Jump Rope', sets: 4, reps: '1 minute', note: 'Steady rhythm' },
+        ]},
+    ],
+    'Muscle Gain': [
+      { name: 'Upper Body Push', type: 'Strength', cal: 280,
+        exercises: [
+          { name: equipment === 'No Equipment' ? 'Diamond Push-ups' : 'Bench Press', sets: 4, reps: '8-10 reps', note: 'Progressive overload' },
+          { name: equipment === 'No Equipment' ? 'Pike Push-ups' : 'Shoulder Press', sets: 3, reps: '10 reps', note: 'Full range of motion' },
+          { name: equipment === 'No Equipment' ? 'Tricep Dips' : 'Tricep Pushdown', sets: 3, reps: '12 reps', note: 'Control the negative' },
+        ]},
+      { name: 'Lower Body Power', type: 'Strength', cal: 320,
+        exercises: [
+          { name: equipment === 'No Equipment' ? 'Pistol Squats' : 'Barbell Squats', sets: 4, reps: '8 reps', note: 'Depth is key' },
+          { name: 'Romanian Deadlift', sets: 3, reps: '10 reps', note: 'Hinge at hips' },
+          { name: 'Calf Raises', sets: 4, reps: '20 reps', note: 'Full range' },
+        ]},
+      { name: 'Upper Body Pull', type: 'Strength', cal: 260,
+        exercises: [
+          { name: equipment === 'No Equipment' ? 'Pull-ups' : 'Lat Pulldown', sets: 4, reps: '8 reps', note: 'Engage lats' },
+          { name: equipment === 'No Equipment' ? 'Bodyweight Rows' : 'Seated Row', sets: 3, reps: '12 reps', note: 'Squeeze shoulder blades' },
+          { name: 'Bicep Curls', sets: 3, reps: '12 reps', note: 'No swinging' },
+        ]},
+    ],
+    'Improve Stamina': [
+      { name: 'Steady State Cardio', type: 'Cardio', cal: 350,
+        exercises: [
+          { name: 'Brisk Walk / Jog', sets: 1, reps: `${duration - 10} minutes`, note: 'Zone 2 heart rate' },
+          { name: 'Bodyweight Squats', sets: 2, reps: '20 reps', note: 'Warm down' },
+        ]},
+      { name: 'Endurance Circuit', type: 'Endurance', cal: 380,
+        exercises: [
+          { name: 'Step-ups', sets: 4, reps: '1 minute', note: 'Consistent pace' },
+          { name: 'Shadow Boxing', sets: 3, reps: '2 minutes', note: 'Keep moving' },
+          { name: 'Jump Squats', sets: 3, reps: '45 seconds', note: 'Explode up' },
+        ]},
+    ],
+    'Flexibility': [
+      { name: 'Yoga Flow', type: 'Yoga', cal: 180,
+        exercises: [
+          { name: 'Sun Salutations', sets: 5, reps: 'full cycle', note: 'Breathe deeply' },
+          { name: 'Warrior Sequence', sets: 3, reps: '45 seconds each', note: 'Hold the stretch' },
+          { name: "Child's Pose", sets: 1, reps: '2 minutes', note: 'Relax completely' },
+          { name: 'Seated Forward Fold', sets: 3, reps: '1 minute', note: 'No bouncing' },
+        ]},
+      { name: 'Mobility & Stretch', type: 'Mobility', cal: 150,
+        exercises: [
+          { name: 'Hip Flexor Stretch', sets: 3, reps: '60 seconds each', note: 'Feel the release' },
+          { name: 'Thoracic Rotation', sets: 2, reps: '10 each side', note: 'Slow movement' },
+          { name: 'Foam Rolling', sets: 1, reps: '15 minutes', note: 'Pause on tender spots' },
+        ]},
+    ],
+    'Stay Active': [
+      { name: 'Full Body Movement', type: 'Mixed', cal: 250,
+        exercises: [
+          { name: 'Bodyweight Squats', sets: 3, reps: '15 reps', note: 'Comfortable pace' },
+          { name: 'Push-ups', sets: 3, reps: '10 reps', note: 'Modify if needed' },
+          { name: 'Walking Lunges', sets: 2, reps: '10 each leg', note: 'Balance focus' },
+          { name: 'Plank', sets: 3, reps: '30 seconds', note: 'Breathe steadily' },
+        ]},
+    ],
+  };
+
+  const templates = workoutsByGoal[fitnessGoal] || workoutsByGoal['Stay Active'];
+  
+  // Assign workouts to days
+  const restDayIndices = [];
+  const step = Math.floor(7 / (restDays + 1));
+  for (let i = 0; i < restDays; i++) restDayIndices.push((i + 1) * step);
+
+  const days = workoutDays.map((day, index) => {
+    if (restDayIndices.includes(index)) {
+      return {
+        day, isRest: true,
+        workoutName: 'Rest Day',
+        type: 'Recovery',
+        duration: 0, caloriesBurned: 0, exercises: [],
+        tip: 'Active recovery day — gentle stretching or a 20-minute walk is ideal'
+      };
+    }
+    const workout = templates[index % templates.length];
+    return {
+      day, isRest: false,
+      workoutName: workout.name,
+      type: workout.type,
+      duration: Number(duration),
+      caloriesBurned: workout.cal,
+      exercises: workout.exercises,
+      tip: `Focus on ${fitnessLevel === 'Beginner' ? 'form and consistency' : 'progressive overload'}`
+    };
+  });
+
+  const workoutDaysArr = days.filter(d => !d.isRest);
+  return res.status(200).json({
+    days,
+    totalWorkouts: workoutDaysArr.length,
+    totalMinutes: workoutDaysArr.reduce((s, d) => s + d.duration, 0),
+    totalCalories: workoutDaysArr.reduce((s, d) => s + d.caloriesBurned, 0),
+    focusArea: fitnessGoal,
+    advice: `Consistency beats perfection. Stick to your ${daysPerWeek} days and results will follow within 4-6 weeks.`
+  });
+};
+
+module.exports = { getAiSuggestions, getHealthScore, generateMealPlan, generateWorkoutPlan };
+
 

@@ -9,16 +9,18 @@
 }
 
 * {
+  font-family: 'Inter', sans-serif;
   border-radius: 0 !important;
 }
 
 body {
-
   font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #1a1a1a;
   background: var(--bg-primary);
-  color: #000;
   overflow-x: hidden;
 }
+
 
 h1,
 h2,
@@ -29,17 +31,20 @@ h6 {
   font-family: 'Cormorant Garamond', serif;
 }
 
+
 .font-tenor {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .font-jost {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .font-cormorant {
   font-family: 'Cormorant Garamond', serif;
 }
+
+
 
 
 ::selection {
@@ -83,7 +88,7 @@ h6 {
 }
 
 .chart-title {
-  font-family: 'Tenor Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: #000;
@@ -98,7 +103,7 @@ h6 {
   justify-content: center;
   height: 100%;
   color: var(--brand-gold);
-  font-family: 'Tenor Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .no-data-hr {

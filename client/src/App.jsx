@@ -16,7 +16,9 @@ import BMIPage from './pages/BMIPage';
 import Profile from './pages/Profile';
 import AirQualityPage from './pages/AirQualityPage';
 import MealPlannerPage from './pages/MealPlannerPage';
+import WorkoutPlannerPage from './pages/WorkoutPlannerPage';
 import AdminPanel from './pages/AdminPanel';
+
 import ProtectedRoute from './components/common/ProtectedRoute';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import PWAInstallBanner from './components/common/PWAInstallBanner';
@@ -74,6 +76,11 @@ function AppContent() {
             <Route path="/meal-planner" element={
               <ProtectedRoute>
                 <MealPlannerPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/workout-planner" element={
+              <ProtectedRoute>
+                <WorkoutPlannerPage />
               </ProtectedRoute>
             } />
             <Route path="/reports" element={

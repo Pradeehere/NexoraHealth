@@ -10,8 +10,8 @@ const FeatureCard = ({ icon: Icon, title, description, onClick }) => (
         className="bg-white border-b border-r border-black p-12 flex flex-col items-start cursor-pointer group transition-colors duration-300 hover:bg-black"
     >
         <Icon className="text-brand-gold w-8 h-8 mb-8 stroke-1" />
-        <h3 className="text-[13px] font-tenor uppercase tracking-[0.2em] font-bold mb-4 text-black group-hover:text-white transition-colors">{title}</h3>
-        <p className="font-jost text-[15px] leading-relaxed text-[#555] group-hover:text-gray-300 transition-colors">
+        <h3 className="text-[12px] font-inter uppercase tracking-[0.2em] font-bold mb-4 text-black group-hover:text-white transition-colors">{title}</h3>
+        <p className="font-inter text-[15px] leading-relaxed text-[#555] group-hover:text-gray-300 transition-colors">
             {description}
         </p>
     </div>
@@ -35,16 +35,16 @@ const LandingPage = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white text-black font-jost selection:bg-black selection:text-brand-gold overflow-x-hidden pt-16">
+        <div className="min-h-screen bg-white text-black font-inter selection:bg-black selection:text-brand-gold overflow-x-hidden pt-16">
             <LandingNavbar />
 
             {/* HERO SECTION */}
             <section className="min-h-[85vh] flex flex-col justify-center items-center px-4 py-20 text-center relative">
-                <p className="font-tenor uppercase tracking-[0.3em] text-xs mb-8 text-black">THE LUXURY OF WELLNESS</p>
+                <p className="font-inter uppercase tracking-[0.3em] text-[11px] font-bold mb-8 text-black">THE LUXURY OF WELLNESS</p>
 
                 <div className="w-full max-w-5xl mx-auto border-t border-brand-gold mb-8"></div>
 
-                <h1 className="font-cormorant italic font-bold text-[64px] md:text-[130px] leading-[1] text-black tracking-tight">
+                <h1 className="font-cormorant italic font-bold text-[64px] md:text-[120px] leading-[1] text-black tracking-tight">
                     <div className="block">TRACK.</div>
                     <div className="block">ANALYZE.</div>
                     <div className="block">THRIVE.</div>
@@ -52,11 +52,11 @@ const LandingPage = () => {
 
                 <div className="w-full max-w-5xl mx-auto border-b border-brand-gold mt-10"></div>
 
-                <div className="mt-14 flex flex-col sm:flex-row gap-6 justify-center">
-                    <button onClick={() => navigate('/register')} className="bg-black text-white font-tenor uppercase tracking-widest text-sm px-12 py-5 hover:bg-brand-gold transition-colors block">
+                <div className="mt-14 flex flex-col sm:row gap-6 justify-center">
+                    <button onClick={() => navigate('/register')} className="bg-black text-white font-inter font-bold uppercase tracking-widest text-[13px] px-12 py-5 hover:bg-brand-gold transition-colors block">
                         Start Your Journey
                     </button>
-                    <button onClick={() => navigate('/login')} className="bg-white border border-black text-black font-tenor uppercase tracking-widest text-sm px-12 py-5 hover:bg-gray-50 transition-colors block">
+                    <button onClick={() => navigate('/login')} className="bg-white border border-black text-black font-inter font-bold uppercase tracking-widest text-[13px] px-12 py-5 hover:bg-gray-50 transition-colors block">
                         Login
                     </button>
                 </div>
@@ -72,34 +72,35 @@ const LandingPage = () => {
                         { label: "Goals Reached", value: "95%" }
                     ].map((stat, i) => (
                         <div key={i} className="py-12 md:py-16 px-4 md:px-8 text-center bg-white hover:bg-gray-50 transition-colors">
-                            <h4 className="font-tenor text-4xl md:text-[56px] text-brand-gold mb-2">{stat.value}</h4>
-                            <span className="font-jost uppercase tracking-[0.1em] font-medium text-[12px] text-black">{stat.label}</span>
+                            <h4 className="font-cormorant text-4xl md:text-[56px] text-brand-gold mb-2 font-bold">{stat.value}</h4>
+                            <span className="font-inter uppercase tracking-[0.15em] font-bold text-[11px] text-black">{stat.label}</span>
                         </div>
                     ))}
                 </div>
             </section>
 
+
             {/* TWO-COLUMN FEATURE (Figma Reference) */}
             <section className="py-24 md:py-32 px-6 md:px-16 border-b border-black bg-[#fdfdfd]">
                 <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                     <div className="max-w-xl">
-                        <h2 className="font-jost font-medium text-4xl md:text-[56px] leading-[1.1] text-black tracking-tight mb-8">
+                        <h2 className="font-inter font-medium text-4xl md:text-[56px] leading-[1.1] text-black tracking-tight mb-8">
                             Go from initial tracking to optimal health with AI
                         </h2>
-                        <p className="font-jost text-lg md:text-[20px] leading-relaxed text-[#444] mb-12">
+                        <p className="font-inter text-lg md:text-[20px] leading-relaxed text-[#444] mb-12">
                             Explore without boundaries. Whether you want to monitor your caloric intake, establish dynamic workout routines, or analyze your sleep cycles—our intelligent algorithms seamlessly tailor wellness prescriptions precisely for you.
                         </p>
 
                         <div>
-                            <h3 className="font-jost font-medium text-2xl md:text-[32px] text-black mb-4">
+                            <h3 className="font-inter font-medium text-2xl md:text-[32px] text-black mb-4">
                                 Give every goal its best shot
                             </h3>
-                            <p className="font-jost text-base md:text-[18px] text-[#555] mb-8 max-w-sm">
+                            <p className="font-inter text-base md:text-[18px] text-[#555] mb-8 max-w-sm">
                                 Prompt any wellness possibility with Nexora. No macro too small, no workout too niche to explore.
                             </p>
                             <button
                                 onClick={() => navigate(user ? '/dashboard' : '/register')}
-                                className="font-jost text-lg font-medium text-black border-b border-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors inline-flex items-center gap-2"
+                                className="font-inter text-lg font-medium text-black border-b border-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors inline-flex items-center gap-2"
                             >
                                 Try Nexora Health
                                 <ArrowRight size={18} />
@@ -110,7 +111,7 @@ const LandingPage = () => {
                     <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gray-100 border border-black overflow-hidden shadow-2xl">
                         {/* The Yoga Image */}
                         <img
-                            src="/images/custom-yoga.png"
+                            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80"
                             alt="Nexora Health Workout"
                             className="w-full h-full object-cover mix-blend-multiply opacity-90"
                         />
@@ -121,7 +122,7 @@ const LandingPage = () => {
 
             {/* FEATURE CARDS SECTION (Figma Reference) */}
             <section className="py-24 md:py-32 px-6 md:px-16 max-w-[1400px] mx-auto">
-                <h2 className="font-cormorant text-3xl md:text-[44px] text-center mb-16 text-black uppercase tracking-widest">Powered by Intelligence</h2>
+                <h2 className="font-cormorant italic text-3xl md:text-[44px] text-center mb-16 text-black uppercase tracking-widest font-bold">Powered by Intelligence</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-black">
                     <FeatureCard
@@ -167,7 +168,7 @@ const LandingPage = () => {
             <section className="py-24 md:py-32 px-6 md:px-16 border-t border-black bg-white">
                 <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-12 md:gap-24">
                     <div>
-                        <h2 className="font-jost text-[40px] md:text-[56px] text-black">FAQs</h2>
+                        <h2 className="font-inter text-[40px] md:text-[56px] text-black">FAQs</h2>
                     </div>
 
                     <div className="flex flex-col">
@@ -177,7 +178,7 @@ const LandingPage = () => {
                                     onClick={() => toggleFaq(index)}
                                     className="w-full py-6 md:py-8 flex justify-between items-center text-left hover:text-brand-gold transition-colors"
                                 >
-                                    <span className="font-jost text-[20px] md:text-[24px] text-black">{faq.q}</span>
+                                    <span className="font-inter text-[20px] md:text-[24px] text-black">{faq.q}</span>
                                     <ChevronDown
                                         className={`w-6 h-6 text-black transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`}
                                         strokeWidth={1.5}
@@ -186,7 +187,7 @@ const LandingPage = () => {
                                 <div
                                     className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaq === index ? 'max-h-48 opacity-100 mb-8' : 'max-h-0 opacity-0'}`}
                                 >
-                                    <p className="font-jost text-[16px] md:text-[18px] text-[#555] leading-relaxed max-w-3xl">
+                                    <p className="font-inter text-[16px] md:text-[18px] text-[#555] leading-relaxed max-w-3xl">
                                         {faq.a}
                                     </p>
                                 </div>
@@ -199,23 +200,23 @@ const LandingPage = () => {
             {/* CTA SECTION */}
             <section className="relative text-white py-40 px-6 text-center border-t border-black overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <img src="/images/custom-yoga.png" alt="Wellness Journey" className="w-full h-full object-cover opacity-60" />
+                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80" alt="Wellness Journey" className="w-full h-full object-cover opacity-60" />
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
                 <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-                    <h2 className="font-cormorant text-4xl md:text-[64px] mb-8 text-white uppercase tracking-widest leading-[1.1]">The peak of wellness</h2>
-                    <p className="font-jost text-lg mb-12 text-white/90">Join thousands who have discovered their optimal health profile.</p>
-                    <button onClick={() => navigate('/register')} className="bg-white border-0 text-black font-tenor uppercase tracking-widest text-sm px-14 py-5 hover:bg-brand-gold hover:text-white transition-colors">
+                    <h2 className="font-cormorant italic text-4xl md:text-[64px] mb-8 text-white uppercase tracking-widest leading-[1.1] font-bold">The peak of wellness</h2>
+                    <p className="font-inter text-[18px] mb-12 text-white/90">Join thousands who have discovered their optimal health profile.</p>
+                    <button onClick={() => navigate('/register')} className="bg-white border-0 text-black font-inter font-bold uppercase tracking-widest text-[13px] px-14 py-5 hover:bg-brand-gold hover:text-white transition-colors">
                         START TODAY
                     </button>
                 </div>
             </section>
 
             {/* FOOTER (Figma Reference) */}
-            <footer className="bg-black text-white pt-24 pb-12 px-6 md:px-16 font-jost">
+            <footer className="bg-black text-white pt-24 pb-12 px-6 md:px-16 font-inter">
                 <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-24">
                     <div className="lg:col-span-1">
-                        <div className="font-jost font-medium text-3xl tracking-wide mb-6">
+                        <div className="font-cormorant italic font-medium text-3xl tracking-wide mb-6">
                             Nexora
                         </div>
                         <div className="flex gap-4">
@@ -228,7 +229,7 @@ const LandingPage = () => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-tenor uppercase tracking-widest text-[10px] text-brand-gold mb-2">Platform</h4>
+                        <h4 className="font-inter font-bold uppercase tracking-widest text-[11px] text-brand-gold mb-2">Platform</h4>
                         <button onClick={() => navigate('/dashboard')} className="text-left text-sm text-gray-300 hover:text-white transition-colors">Dashboard</button>
                         <button onClick={() => navigate('/tracker')} className="text-left text-sm text-gray-300 hover:text-white transition-colors">Health Tracker</button>
                         <button onClick={() => navigate('/reports')} className="text-left text-sm text-gray-300 hover:text-white transition-colors">Reports</button>
@@ -236,7 +237,7 @@ const LandingPage = () => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-tenor uppercase tracking-widest text-[10px] text-brand-gold mb-2">Use Cases</h4>
+                        <h4 className="font-inter font-bold uppercase tracking-widest text-[11px] text-brand-gold mb-2">Use Cases</h4>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Diet Management</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Sleep Optimization</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Workout Tracking</a>
@@ -244,7 +245,7 @@ const LandingPage = () => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-tenor uppercase tracking-widest text-[10px] text-brand-gold mb-2">Resources</h4>
+                        <h4 className="font-inter font-bold uppercase tracking-widest text-[11px] text-brand-gold mb-2">Resources</h4>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Blog</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Best Practices</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">API Documentation</a>
@@ -252,7 +253,7 @@ const LandingPage = () => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <h4 className="font-tenor uppercase tracking-widest text-[10px] text-brand-gold mb-2">Company</h4>
+                        <h4 className="font-inter font-bold uppercase tracking-widest text-[11px] text-brand-gold mb-2">Company</h4>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">About Us</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Careers</a>
                         <a href="#" className="text-sm text-gray-300 hover:text-white transition-colors">Contact</a>

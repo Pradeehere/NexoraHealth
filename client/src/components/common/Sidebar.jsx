@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind, ChevronLeft, ChevronRight, Heart, UtensilsCrossed } from 'lucide-react';
+import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind, ChevronLeft, ChevronRight, Heart, UtensilsCrossed, Dumbbell } from 'lucide-react';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const { user } = useSelector((state) => state.auth);
@@ -12,24 +12,25 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
         { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { path: '/tracker', label: 'Tracker', icon: ActivitySquare },
         { path: '/meal-planner', label: 'Meal Planner', icon: UtensilsCrossed },
+        { path: '/workout-planner', label: 'Workout Plan', icon: Dumbbell },
         { path: '/reports', label: 'Reports', icon: PieChart },
         { path: '/air-quality', label: 'Air Quality', icon: Wind },
         { path: '/bmi', label: 'BMI', icon: Scale },
         { path: '/profile', label: 'Profile', icon: UserCircle },
     ];
 
+
     if (user.role === 'admin') {
         navItems.push({ path: '/admin', label: 'Admin', icon: ShieldAlert });
     }
 
     const getNavLinkClass = ({ isActive }) =>
-        `flex items-center gap-3 py-4 transition-all duration-300 font-tenor uppercase tracking-[0.12em] text-[13px]
+        `flex items-center gap-3 py-4 transition-all duration-300 font-inter font-semibold uppercase tracking-[0.1em] text-[13px]
          ${isCollapsed ? 'px-0 justify-center' : 'px-6'}
          ${isActive
             ? 'text-brand-gold border-l-[3px] border-brand-gold bg-brand-gold/5'
             : 'text-black hover:text-brand-gold border-l-[3px] border-transparent hover:bg-brand-gold/5'
         }`;
-
 
     const getMobileNavLinkClass = ({ isActive }) =>
         `flex flex-col items-center justify-center flex-1 py-1 transition-all duration-300
@@ -50,7 +51,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
                         <Heart className="text-brand-gold animate-pulse" size={24} />
                     ) : (
                         <div className="w-full">
-                            <h1 className="text-2xl font-tenor tracking-widest text-black truncate">NEXORA HEALTH</h1>
+                            <h1 className="text-2xl font-cormorant font-bold tracking-widest text-black truncate">NEXORA</h1>
                             <div className="h-[1px] w-full bg-brand-gold mt-2 opacity-50"></div>
                         </div>
                     )}
@@ -83,7 +84,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
                     {!isCollapsed && (
                         <div className="flex flex-col min-w-0">
                             <p className="text-xs font-bold text-black truncate uppercase tracking-wider">{user.name}</p>
-                            <span className="text-[10px] text-brand-gold font-tenor uppercase tracking-widest bg-brand-gold/10 px-2 py-0.5 rounded-full w-fit">
+                            <span className="text-[10px] text-brand-gold font-inter font-semibold uppercase tracking-widest bg-brand-gold/10 px-2 py-0.5 rounded-full w-fit">
                                 {user.role}
                             </span>
                         </div>
@@ -96,12 +97,13 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
                 {navItems.slice(0, 5).map((item) => (
                     <NavLink key={item.path} to={item.path} className={getMobileNavLinkClass}>
                         <item.icon size={22} strokeWidth={1.5} />
-                        <span className="text-[10px] font-tenor uppercase tracking-widest mt-1">{item.label}</span>
+                        <span className="text-[10px] font-inter font-semibold uppercase tracking-widest mt-1">{item.label}</span>
                     </NavLink>
                 ))}
             </nav>
         </>
     );
+
 };
 
 export default Sidebar;

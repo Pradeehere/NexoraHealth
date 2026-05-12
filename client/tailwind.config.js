@@ -17,12 +17,16 @@ export default {
                 }
             },
             fontFamily: {
+                playfair: ['Playfair Display', 'serif'],
+                jakarta: ['Plus Jakarta Sans', 'sans-serif'],
                 cormorant: ['Cormorant Garamond', 'serif'],
-                tenor: ['DM Serif Display', 'serif'],
-                jost: ['Inter', 'sans-serif'],
-                display: ['DM Serif Display', 'serif'],
-                body: ['Inter', 'sans-serif'],
+                inter: ['Inter', 'sans-serif'],
+                tenor: ['Plus Jakarta Sans', 'sans-serif'], 
+                jost: ['Plus Jakarta Sans', 'sans-serif'],
+                body: ['Plus Jakarta Sans', 'sans-serif'],
             }
+
+
 
         },
     },

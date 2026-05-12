@@ -76,11 +76,11 @@ const HealthScoreRing = () => {
         <div style={{ position: 'absolute', top: '50%', left: '50%',
                       transform: 'translate(-50%, -50%)',
                       textAlign: 'center' }}>
-          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px',
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '64px',
                       fontWeight: 700, color, margin: 0, lineHeight: 1 }}>
             {score}
           </p>
-          <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '12px',
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px',
                       letterSpacing: '0.1em', color: '#888', margin: 0 }}>
             /100
           </p>
@@ -89,11 +89,11 @@ const HealthScoreRing = () => {
 
       {/* Info */}
       <div style={{ flex: 1 }}>
-        <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
-                    color: '#C9A84C', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase' }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.2em',
+                    color: '#C9A84C', fontSize: '12px', marginBottom: '8px', textTransform: 'uppercase', fontWeight: 700 }}>
           HEALTH SCORE
         </p>
-        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '44px',
+        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '40px',
                      fontStyle: 'italic', color: '#000', margin: '0 0 4px 0',
                      fontWeight: 600 }}>
           Grade {grade}
@@ -108,8 +108,8 @@ const HealthScoreRing = () => {
           <div key={label} style={{ marginBottom: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between',
                            marginBottom: '6px' }}>
-              <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '12px',
-                              letterSpacing: '0.1em', color: '#666', textTransform: 'uppercase' }}>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px',
+                              letterSpacing: '0.1em', color: '#666', textTransform: 'uppercase', fontWeight: 600 }}>
                 {label}
               </span>
               <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px',
@@ -127,6 +127,7 @@ const HealthScoreRing = () => {
           </div>
         ))}
       </div>
+
     </div>
 
   );
