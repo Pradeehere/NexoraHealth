@@ -10,35 +10,50 @@ const MoodTracker = ({ todayMood, onMoodSelect, recordId }) => {
     { emoji: '😐', label: 'Meh', value: 2 },
     { emoji: '🙂', label: 'OK', value: 3 },
     { emoji: '😊', label: 'Good', value: 4 },
-    { emoji: '🥰', label: 'Great', value: 5 },
+    { emoji: '🤩', label: 'Great', value: 5 },
   ];
 
-  const handleMoodSelect = async (value) => {
+  const handleMoodSelect = async (moodValue) => {
     try {
+      const today = new Date().toISOString().split('T')[0];
+      const token = user?.token || '';
       const config = {
-        headers: { Authorization: `Bearer ${user.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
 
-      if (recordId) {
-        await axios.put(`/api/health/${recordId}`, { mood: value }, config);
+      // Check if today's record exists
+      const { data: records } = await axios.get('/api/health', config);
+      const todayRecord = records.find(r =>
+        new Date(r.date).toISOString().split('T')[0] === today
+      );
+
+      if (todayRecord) {
+        await axios.put(`/api/health/${todayRecord._id}`,
+          { mood: moodValue },
+          config
+        );
       } else {
-        await axios.post('/api/health', {
-          date: new Date().toISOString(),
-          mood: value
-        }, config);
+        await axios.post('/api/health',
+          { mood: moodValue, calories: 0, waterIntake: 0, sleepHours: 0, weight: 0, date: new Date().toISOString() },
+          config
+        );
       }
 
-      onMoodSelect(value);
+      onMoodSelect(moodValue);
     } catch (err) {
-      console.error("Mood update error", err);
+      console.error('Mood update error:', err.message);
     }
   };
 
   return (
     <div style={{ border: '1px solid #000', padding: '24px', background: '#fff' }} className="luxury-card">
       <p style={{
-        fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-        color: '#C9A84C', fontSize: '13px', marginBottom: '20px'
+        fontFamily: 'DM Serif Display, serif', 
+        letterSpacing: '0.15em',
+        color: '#C9A84C', 
+        fontSize: '14px', 
+        textTransform: 'uppercase',
+        marginBottom: '12px'
       }}>
         TODAY'S MOOD
       </p>
@@ -53,7 +68,7 @@ const MoodTracker = ({ todayMood, onMoodSelect, recordId }) => {
             }}>
             <span style={{ fontSize: '28px' }}>{emoji}</span>
             <span style={{
-              fontFamily: 'Tenor Sans', fontSize: '9px',
+              fontFamily: 'DM Serif Display, serif', fontSize: '10px',
               letterSpacing: '0.1em', color: '#888'
             }}>
               {label.toUpperCase()}
@@ -63,7 +78,7 @@ const MoodTracker = ({ todayMood, onMoodSelect, recordId }) => {
       </div>
       {todayMood && (
         <p style={{
-          fontFamily: 'Jost', fontSize: '13px', color: '#888',
+          fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#444',
           textAlign: 'center', marginTop: '12px'
         }}>
           Mood logged ✓
@@ -72,5 +87,6 @@ const MoodTracker = ({ todayMood, onMoodSelect, recordId }) => {
     </div>
   );
 };
+
 
 export default MoodTracker;

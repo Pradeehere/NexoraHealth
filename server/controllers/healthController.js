@@ -11,8 +11,20 @@ const getHealthRecords = async (req, res, next) => {
 
 const addHealthRecord = async (req, res, next) => {
     try {
+        const calories = req.body.calories !== undefined ? Number(req.body.calories) : 0;
+        const waterIntake = req.body.waterIntake !== undefined ? Number(req.body.waterIntake) : 0;
+        const sleepHours = req.body.sleepHours !== undefined ? Number(req.body.sleepHours) : 0;
+        const mood = req.body.mood !== undefined ? Number(req.body.mood) : 3;
+        const weight = req.body.weight !== undefined ? Number(req.body.weight) : 0;
+        const date = req.body.date || new Date();
+
         const record = await HealthRecord.create({
-            ...req.body,
+            calories,
+            waterIntake,
+            sleepHours,
+            mood,
+            weight,
+            date,
             userId: req.user._id,
         });
         res.status(201).json(record);
@@ -33,9 +45,17 @@ const updateHealthRecord = async (req, res, next) => {
             throw new Error('User not authorized');
         }
 
+        const updateData = {};
+        if (req.body.calories !== undefined) updateData.calories = Number(req.body.calories);
+        if (req.body.waterIntake !== undefined) updateData.waterIntake = Number(req.body.waterIntake);
+        if (req.body.sleepHours !== undefined) updateData.sleepHours = Number(req.body.sleepHours);
+        if (req.body.mood !== undefined) updateData.mood = Number(req.body.mood);
+        if (req.body.weight !== undefined) updateData.weight = Number(req.body.weight);
+        if (req.body.date !== undefined) updateData.date = req.body.date;
+
         const updatedRecord = await HealthRecord.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updateData,
             { new: true }
         );
         res.status(200).json(updatedRecord);
@@ -43,6 +63,7 @@ const updateHealthRecord = async (req, res, next) => {
         next(error);
     }
 };
+
 
 const deleteHealthRecord = async (req, res, next) => {
     try {

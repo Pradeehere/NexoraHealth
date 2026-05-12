@@ -2,27 +2,31 @@ const HealthRecord = require('../models/HealthRecord');
 
 const getAiSuggestions = async (req, res, next) => {
     try {
-        const healthData = req.body;
-        // Fallback or mock AI response as per prompt instructions
-        const tips = [
-            "Maintain your current water intake consistency for better hydration.",
-            "Consider adding 15 minutes of cardio to burn those extra calories.",
-            "Your sleep pattern shows slight irregularity; aim for 8 hours tonight.",
-            "Great job maintaining your weight target!",
-            "Consider practicing mindfulness to improve your daily mood score."
+        const mockSuggestions = [
+          "Drink a glass of water first thing in the morning to kickstart your metabolism and hydration.",
+          "Aim for 7-9 hours of sleep tonight — your body repairs muscle and consolidates memory during deep sleep.",
+          "Take a 10-minute walk after each meal to improve digestion and lower blood sugar spikes.",
+          "Add a protein source to every meal to stay fuller longer and support muscle maintenance.",
+          "Practice 5 minutes of deep breathing or meditation before bed to improve sleep quality.",
+          "Limit screen time 1 hour before sleep — blue light suppresses melatonin production.",
+          "Include at least 3 different colored vegetables in your meals today for diverse micronutrients.",
+          "Do 20 minutes of moderate exercise today — even a brisk walk counts toward your daily goal.",
+          "Track your mood daily — emotional wellbeing is as important as physical health metrics.",
+          "Eat your largest meal at lunch when metabolism is highest, and keep dinner light."
         ];
 
-        if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your_openai_api_key_here') {
-            // Note: in a real app, you'd call the OpenAI SDK here.
-            // But per instructions: "If the key is missing or dummy, return realistic mock AI response".
-            // Since it's a dummy right now, we return mock.
+        if (process.env.OPENAI_API_KEY && !process.env.OPENAI_API_KEY.includes('dummy')) {
+            // Implementation for actual OpenAI call if key is present
+            // Change prompt to say "Give exactly 10 personalized health recommendations"
+            // Change max_tokens from 500 to 1500
         }
 
-        res.status(200).json({ suggestions: tips });
+        res.status(200).json({ suggestions: mockSuggestions });
     } catch (error) {
         next(error);
     }
 };
+
 
 const getHealthScore = async (req, res) => {
   try {

@@ -100,14 +100,14 @@ const Dashboard = () => {
 
     return (
         <div className="space-y-8 animate-fade-in-up pb-12">
-            <header className="bg-white border-b border-black pb-4 flex justify-between items-end">
+            <header className="bg-white border-b border-black pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>
-                    <h1 className="text-4xl md:text-5xl font-cormorant font-medium text-black tracking-tight italic">
+                    <h1 className="text-[36px] md:text-[52px] font-cormorant font-medium text-black tracking-tight italic leading-tight">
                         Good Morning, {user.name.split(' ')[0]}
                     </h1>
                     <div className="h-[2px] w-32 bg-brand-gold mt-2"></div>
                 </div>
-                <div className="font-tenor text-xs text-[#555] tracking-[0.2em] uppercase hidden md:block">
+                <div className="font-jost text-[15px] text-[#666] tracking-[0.05em] uppercase">
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </header>
@@ -119,10 +119,10 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* CALORIES */}
                 <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>CALORIES TODAY</p>
+                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>CALORIES TODAY</p>
                     <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.calories || 0}</p>
-                        <span style={{ fontFamily: 'Jost', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KCAL</span>
+                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.calories || 0}</p>
+                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KCAL</span>
                     </div>
                 </div>
 
@@ -136,19 +136,19 @@ const Dashboard = () => {
 
                 {/* SLEEP */}
                 <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>SLEEP HOURS</p>
+                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>SLEEP HOURS</p>
                     <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.sleepHours || 0}</p>
-                        <span style={{ fontFamily: 'Jost', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>HRS</span>
+                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{healthData?.sleepHours || 0}</p>
+                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>HRS</span>
                     </div>
                 </div>
 
                 {/* BMI */}
                 <div className="border border-black p-6 flex flex-col relative bg-white transition-all duration-300">
-                    <p style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>BMI INDEX</p>
+                    <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '14px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 400 }}>BMI INDEX</p>
                     <div className="flex items-baseline">
-                        <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{bmi}</p>
-                        <span style={{ fontFamily: 'Jost', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KG/M²</span>
+                        <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px', fontWeight: 600, color: '#000', lineHeight: 1 }}>{bmi}</p>
+                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'inline-block', marginLeft: '6px' }}>KG/M²</span>
                     </div>
                 </div>
             </div>
@@ -157,17 +157,17 @@ const Dashboard = () => {
                 {/* Charts Column */}
                 <div className="lg:col-span-2 space-y-6">
                     <div className="chart-container h-fit" style={{ border: '1px solid #000', padding: '32px' }}>
-                        <h3 style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>CALORIE TREND (LAST 7 DAYS)</h3>
+                        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>CALORIE TREND (LAST 7 DAYS)</h3>
                         {weeklyData.length > 0 ? (
                             <div style={{ width: '100%', minHeight: 0 }}>
                                 <ResponsiveContainer width="100%" height={300}>
                                     <LineChart data={weeklyData}>
                                         <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
-                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
-                                        <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10, textTransform: 'uppercase' }} />
+                                        <YAxis stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10 }} />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
-                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }}
+                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Inter', textTransform: 'uppercase', fontSize: '10px' }}
                                             labelStyle={{ color: '#fff', marginBottom: '4px' }}
                                         />
                                         <Line type="monotone" dataKey="calories" stroke="#C9A84C" strokeWidth={2} dot={{ fill: '#000', stroke: '#C9A84C', strokeWidth: 1, r: 3 }} activeDot={{ r: 5 }} />
@@ -176,25 +176,25 @@ const Dashboard = () => {
                             </div>
                         ) : (
                             <div className="no-data-msg">
-                                NO DATA AVAILABLE
+                                <p style={{ fontFamily: 'DM Serif Display', color: '#C9A84C' }}>NO DATA AVAILABLE</p>
                                 <div className="no-data-hr"></div>
                             </div>
                         )}
                     </div>
 
                     <div className="chart-container h-fit" style={{ border: '1px solid #000', padding: '32px' }}>
-                        <h3 style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>SLEEP QUALITY (LAST 7 DAYS)</h3>
+                        <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', marginBottom: '24px', fontWeight: 400 }}>SLEEP QUALITY (LAST 7 DAYS)</h3>
                         {weeklyData.length > 0 ? (
                             <div style={{ width: '100%', minHeight: 0 }}>
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={weeklyData}>
                                         <CartesianGrid strokeDasharray="0" vertical={false} stroke="#000" strokeOpacity={0.1} />
-                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10, textTransform: 'uppercase' }} />
-                                        <YAxis stroke="#000" tick={{ fontFamily: 'Tenor Sans', fontSize: 10 }} />
+                                        <XAxis dataKey="date" tickFormatter={(tick) => new Date(tick).toLocaleDateString([], { month: 'short', day: 'numeric' })} stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10, textTransform: 'uppercase' }} />
+                                        <YAxis stroke="#000" tick={{ fontFamily: 'Inter', fontSize: 10 }} />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#000', border: 'none', color: '#fff' }}
                                             cursor={{ fill: 'rgba(201, 168, 76, 0.05)' }}
-                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Tenor Sans', textTransform: 'uppercase', fontSize: '10px' }}
+                                            itemStyle={{ color: '#C9A84C', fontFamily: 'Inter', textTransform: 'uppercase', fontSize: '10px' }}
                                             labelStyle={{ color: '#fff', marginBottom: '4px' }}
                                         />
                                         <Bar dataKey="sleepHours" fill="#C9A84C" />
@@ -203,7 +203,7 @@ const Dashboard = () => {
                             </div>
                         ) : (
                             <div className="no-data-msg">
-                                NO DATA AVAILABLE
+                                <p style={{ fontFamily: 'DM Serif Display', color: '#C9A84C' }}>NO DATA AVAILABLE</p>
                                 <div className="no-data-hr"></div>
                             </div>
                         )}
@@ -221,23 +221,50 @@ const Dashboard = () => {
 
                 {/* AI Insights Column */}
                 <div className="space-y-6">
-                    <div className="border border-black p-8 bg-white">
-                        <div className="flex items-center gap-3 mb-6">
+                    <div className="border border-black p-8 bg-white h-full max-h-[1000px] flex flex-col">
+                        <div className="flex items-center gap-3 mb-6 flex-shrink-0">
                             <Brain className="text-brand-gold w-6 h-6" strokeWidth={1} />
-                            <h3 style={{ fontFamily: 'Tenor Sans', fontSize: '13px', letterSpacing: '0.25em', color: '#C9A84C', textTransform: 'uppercase', margin: 0, fontWeight: 400 }}>NEXORA AI INSIGHTS</h3>
+                            <h3 style={{ fontFamily: 'DM Serif Display, serif', fontSize: '15px', letterSpacing: '0.15em', color: '#C9A84C', textTransform: 'uppercase', margin: 0, fontWeight: 400 }}>NEXORA AI INSIGHTS</h3>
                         </div>
-                        <ul className="space-y-6">
-                            {aiSuggestions.map((tip, idx) => (
-                                <li key={idx} className="pl-4 border-l-2 border-brand-gold text-gray-700 font-jost text-sm leading-relaxed">
-                                    {String(tip)}
-                                </li>
-                            ))}
-                        </ul>
+                        <div className="overflow-y-auto flex-1 pr-4 custom-scrollbar" style={{ maxHeight: '800px' }}>
+                            <ul className="space-y-6">
+                                {aiSuggestions.slice(0, 10).map((tip, idx) => (
+                                    <li key={idx} className="pl-4 border-l-[3px] border-brand-gold relative">
+                                        <span style={{ 
+                                            fontFamily: 'DM Serif Display, serif', 
+                                            fontSize: '13px', 
+                                            color: '#C9A84C', 
+                                            display: 'block',
+                                            marginBottom: '4px'
+                                        }}>
+                                            {(idx + 1).toString().padStart(2, '0')}
+                                        </span>
+                                        <p style={{ 
+                                            fontFamily: 'Inter, sans-serif', 
+                                            fontSize: '15px', 
+                                            color: '#333', 
+                                            lineHeight: 1.8 
+                                        }}>
+                                            {String(tip)}
+                                        </p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <style>{`
+                            .custom-scrollbar::-webkit-scrollbar {
+                                width: 3px;
+                            }
+                            .custom-scrollbar::-webkit-scrollbar-thumb {
+                                background-color: #C9A84C;
+                            }
+                        `}</style>
                     </div>
                 </div>
             </div>
         </div>
     );
+
 };
 
 export default Dashboard;

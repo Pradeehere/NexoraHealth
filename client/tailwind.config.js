@@ -18,9 +18,12 @@ export default {
             },
             fontFamily: {
                 cormorant: ['Cormorant Garamond', 'serif'],
-                tenor: ['Tenor Sans', 'sans-serif'],
-                jost: ['Jost', 'sans-serif'],
+                tenor: ['DM Serif Display', 'serif'],
+                jost: ['Inter', 'sans-serif'],
+                display: ['DM Serif Display', 'serif'],
+                body: ['Inter', 'sans-serif'],
             }
+
         },
     },
     plugins: [],

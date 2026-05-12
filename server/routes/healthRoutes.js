@@ -9,11 +9,12 @@ router.use(protect);
 
 router.get('/', getHealthRecords);
 router.post('/', [
-    body('calories').isNumeric().withMessage('Calories must be a number'),
-    body('waterIntake').isNumeric().withMessage('Water Intake must be a number'),
-    body('sleepHours').isNumeric().withMessage('Sleep Hours must be a number'),
+    body('calories').optional().isNumeric().withMessage('Calories must be a number'),
+    body('waterIntake').optional().isNumeric().withMessage('Water Intake must be a number'),
+    body('sleepHours').optional().isNumeric().withMessage('Sleep Hours must be a number'),
     validateRequest
 ], addHealthRecord);
+
 
 router.put('/:id', updateHealthRecord);
 router.delete('/:id', deleteHealthRecord);

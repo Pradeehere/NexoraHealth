@@ -10,31 +10,46 @@ const WaterTracker = ({ current = 0, goal = 8, onUpdate, recordId }) => {
     const newCount = index + 1 === current ? index : index + 1;
     
     try {
+      const today = new Date().toISOString().split('T')[0];
+      const token = user?.token || '';
       const config = {
-        headers: { Authorization: `Bearer ${user.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       };
 
-      if (recordId) {
-        // Update existing record
-        await axios.put(`/api/health/${recordId}`, { waterIntake: newCount }, config);
+      // Check if today's record exists
+      const { data: records } = await axios.get('/api/health', config);
+      const todayRecord = records.find(r => 
+        new Date(r.date).toISOString().split('T')[0] === today
+      );
+      
+      if (todayRecord) {
+        await axios.put(`/api/health/${todayRecord._id}`, 
+          { waterIntake: newCount },
+          config
+        );
       } else {
-        // Create new record for today
-        await axios.post('/api/health', { 
-          date: new Date().toISOString(),
-          waterIntake: newCount 
-        }, config);
+        await axios.post('/api/health',
+          { waterIntake: newCount, calories: 0, sleepHours: 0, mood: 3, weight: 0, date: new Date().toISOString() },
+          config
+        );
       }
       
       onUpdate(newCount);
     } catch (err) {
-      console.error("Water update error", err);
+      console.error("Water update error", err.message);
     }
   };
 
   return (
-    <div style={{ border: '1px solid #000', padding: '24px', background: '#fff' }} className="luxury-card group hover:bg-black transition-all duration-300">
-      <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                  color: '#C9A84C', fontSize: '13px', marginBottom: '20px' }}>
+    <div style={{ border: '1px solid #000', padding: '24px', background: '#fff' }} className="luxury-card group hover:bg-black transition-all duration-300 h-full">
+      <p style={{ 
+        fontFamily: 'DM Serif Display, serif', 
+        letterSpacing: '0.15em',
+        color: '#C9A84C', 
+        fontSize: '14px', 
+        textTransform: 'uppercase',
+        marginBottom: '12px' 
+      }}>
         WATER INTAKE
       </p>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap',
@@ -54,15 +69,16 @@ const WaterTracker = ({ current = 0, goal = 8, onUpdate, recordId }) => {
           </button>
         ))}
       </div>
-      <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '42px',
+      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '48px',
                   fontWeight: 600, color: '#000', margin: 0 }} className="group-hover:text-white transition-colors">
         {current}<span style={{ fontSize: '16px', color: '#888',
-                                  fontFamily: 'Jost', marginLeft: '6px' }}>
+                                  fontFamily: 'Inter, sans-serif', marginLeft: '6px' }}>
           / {goal} glasses
         </span>
       </p>
     </div>
   );
 };
+
 
 export default WaterTracker;

@@ -23,12 +23,13 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     }
 
     const getNavLinkClass = ({ isActive }) =>
-        `flex items-center gap-3 py-4 transition-all duration-300 font-tenor uppercase tracking-[0.15em] text-sm
+        `flex items-center gap-3 py-4 transition-all duration-300 font-tenor uppercase tracking-[0.12em] text-[13px]
          ${isCollapsed ? 'px-0 justify-center' : 'px-6'}
          ${isActive
-            ? 'text-brand-gold border-l-4 border-brand-gold bg-brand-gold/5'
-            : 'text-black hover:text-brand-gold border-l-4 border-transparent hover:bg-brand-gold/5'
+            ? 'text-brand-gold border-l-[3px] border-brand-gold bg-brand-gold/5'
+            : 'text-black hover:text-brand-gold border-l-[3px] border-transparent hover:bg-brand-gold/5'
         }`;
+
 
     const getMobileNavLinkClass = ({ isActive }) =>
         `flex flex-col items-center justify-center flex-1 py-1 transition-all duration-300

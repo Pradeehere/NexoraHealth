@@ -76,12 +76,12 @@ const HealthScoreRing = () => {
         <div style={{ position: 'absolute', top: '50%', left: '50%',
                       transform: 'translate(-50%, -50%)',
                       textAlign: 'center' }}>
-          <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '52px',
+          <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '56px',
                       fontWeight: 700, color, margin: 0, lineHeight: 1 }}>
             {score}
           </p>
-          <p style={{ fontFamily: 'Tenor Sans', fontSize: '10px',
-                      letterSpacing: '0.2em', color: '#888', margin: 0 }}>
+          <p style={{ fontFamily: 'DM Serif Display, serif', fontSize: '12px',
+                      letterSpacing: '0.1em', color: '#888', margin: 0 }}>
             /100
           </p>
         </div>
@@ -89,45 +89,46 @@ const HealthScoreRing = () => {
 
       {/* Info */}
       <div style={{ flex: 1 }}>
-        <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                    color: '#C9A84C', fontSize: '11px', marginBottom: '8px' }}>
+        <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                    color: '#C9A84C', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase' }}>
           HEALTH SCORE
         </p>
-        <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: '40px',
+        <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '44px',
                      fontStyle: 'italic', color: '#000', margin: '0 0 4px 0',
                      fontWeight: 600 }}>
           Grade {grade}
         </h2>
-        <p style={{ fontFamily: 'Jost', fontSize: '14px', color: '#555',
-                    marginBottom: '24px', lineHeight: 1.6 }}>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#444',
+                    marginBottom: '24px', lineHeight: 1.8 }}>
           {scoreData?.message || 'Log your health data to calculate your score'}
         </p>
 
         {/* Breakdown bars */}
         {(scoreData?.breakdown || []).map(({ label, score: s, max, tip }) => (
-          <div key={label} style={{ marginBottom: '12px' }}>
+          <div key={label} style={{ marginBottom: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between',
-                           marginBottom: '4px' }}>
-              <span style={{ fontFamily: 'Tenor Sans', fontSize: '10px',
-                              letterSpacing: '0.15em', color: '#888' }}>
-                {label.toUpperCase()}
+                           marginBottom: '6px' }}>
+              <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '12px',
+                              letterSpacing: '0.1em', color: '#666', textTransform: 'uppercase' }}>
+                {label}
               </span>
-              <span style={{ fontFamily: 'Jost', fontSize: '11px',
-                              color: '#000' }}>{s}/{max}</span>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px',
+                              color: '#000', fontWeight: 500 }}>{s}/{max}</span>
             </div>
-            <div style={{ height: '3px', background: '#f0f0f0', width: '100%' }}>
-              <div style={{ height: '3px', background: color,
+            <div style={{ height: '4px', background: '#f0f0f0', width: '100%' }}>
+              <div style={{ height: '4px', background: color,
                              width: `${(s / max) * 100}%`,
                              transition: 'width 1s ease 0.5s' }} />
             </div>
-            <p style={{ fontFamily: 'Jost', fontSize: '11px',
-                        color: '#999', margin: '3px 0 0 0', fontStyle: 'italic' }}>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px',
+                        color: '#999', margin: '4px 0 0 0', fontStyle: 'italic' }}>
               {tip}
             </p>
           </div>
         ))}
       </div>
     </div>
+
   );
 };
 

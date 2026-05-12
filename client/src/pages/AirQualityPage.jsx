@@ -77,20 +77,20 @@ const AirQualityPage = () => {
   const strokeDash = (aqiPercent / 100) * circumference;
 
   return (
-    <div style={{ padding: '32px 40px', fontFamily: 'Jost, sans-serif',
+    <div style={{ padding: '32px 40px', fontFamily: 'Inter, sans-serif',
                   maxWidth: '1000px', margin: '0 auto' }}>
       
       {/* Page Title */}
-      <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                  color: '#C9A84C', fontSize: '13px', marginBottom: '8px' }}>
+      <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                  color: '#C9A84C', fontSize: '14px', marginBottom: '8px', textTransform: 'uppercase' }}>
         AIR QUALITY MONITOR
       </p>
-      <h1 style={{ fontFamily: 'Cormorant Garamond', fontSize: '48px',
+      <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '52px',
                    fontStyle: 'italic', color: '#000', marginBottom: '8px', fontWeight: 600 }}>
         Bengaluru, India
       </h1>
       {data.isMockData && (
-        <p style={{ color: '#999', fontSize: '12px', marginBottom: '32px' }}>
+        <p style={{ color: '#999', fontSize: '13px', marginBottom: '32px', fontFamily: 'Inter, sans-serif' }}>
           Showing estimated data for your region
         </p>
       )}
@@ -101,7 +101,7 @@ const AirQualityPage = () => {
                       background: '#fff5f5', marginBottom: '32px',
                       display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
           <span style={{ fontSize: '20px' }}>⚠️</span>
-          <p style={{ margin: 0, color: '#c0392b', fontSize: '14px', lineHeight: 1.6 }}>
+          <p style={{ margin: 0, color: '#c0392b', fontSize: '15px', lineHeight: 1.8, fontFamily: 'Inter, sans-serif' }}>
             {warning}
           </p>
         </div>
@@ -113,38 +113,38 @@ const AirQualityPage = () => {
         
         {/* AQI Gauge Card */}
         <div style={{ border: '1px solid #000', padding: '40px 32px',
-                      display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                      color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff' }}>
+          <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                      color: '#C9A84C', fontSize: '14px', marginBottom: '24px', textTransform: 'uppercase' }}>
             AIR QUALITY INDEX
           </p>
           <svg width="180" height="180" style={{ transform: 'rotate(-90deg)' }}>
             <circle cx="90" cy="90" r="70" fill="none"
-                    stroke="#eee" strokeWidth="8" />
+                    stroke="#eee" strokeWidth="12" />
             <circle cx="90" cy="90" r="70" fill="none"
-                    stroke={aqiColor} strokeWidth="8"
+                    stroke={aqiColor} strokeWidth="12"
                     strokeDasharray={`${strokeDash} ${circumference}`}
                     strokeLinecap="round"
                     style={{ transition: 'stroke-dasharray 1s ease' }} />
           </svg>
           <div style={{ marginTop: '-140px', marginBottom: '100px',
                         textAlign: 'center', zIndex: 1 }}>
-            <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '64px',
+            <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '64px',
                         fontWeight: 600, color: aqiColor, margin: 0,
                         lineHeight: 1 }}>
               {aqi}
             </p>
-            <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.2em',
-                        fontSize: '13px', color: '#000', marginTop: '4px' }}>
+            <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.1em',
+                        fontSize: '14px', color: '#000', marginTop: '4px' }}>
               {aqiLevel.toUpperCase()}
             </p>
           </div>
         </div>
 
         {/* Stats Card */}
-        <div style={{ border: '1px solid #000', padding: '32px' }}>
-          <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                      color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+        <div style={{ border: '1px solid #000', padding: '32px', background: '#fff' }}>
+          <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                      color: '#C9A84C', fontSize: '14px', marginBottom: '24px', textTransform: 'uppercase' }}>
             DETAILED METRICS
           </p>
           {[
@@ -155,12 +155,12 @@ const AirQualityPage = () => {
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
                                        alignItems: 'baseline', borderBottom: '1px solid #eee',
                                        paddingBottom: '16px', marginBottom: '16px' }}>
-              <span style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.15em',
-                              fontSize: '11px', color: '#888' }}>{label}</span>
-              <span style={{ fontFamily: 'Cormorant Garamond', fontSize: '32px',
+              <span style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.1em',
+                              fontSize: '13px', color: '#888', textTransform: 'uppercase' }}>{label}</span>
+              <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: '36px',
                               fontWeight: 600, color: '#000' }}>
                 {value}<span style={{ fontSize: '14px', color: '#888',
-                                       marginLeft: '4px', fontFamily: 'Jost' }}>{unit}</span>
+                                       marginLeft: '4px', fontFamily: 'Inter, sans-serif' }}>{unit}</span>
               </span>
             </div>
           ))}
@@ -168,9 +168,9 @@ const AirQualityPage = () => {
       </div>
 
       {/* Pollen Card */}
-      <div style={{ border: '1px solid #000', padding: '32px', marginBottom: '24px' }}>
-        <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                    color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+      <div style={{ border: '1px solid #000', padding: '32px', marginBottom: '24px', background: '#fff' }}>
+        <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                    color: '#C9A84C', fontSize: '14px', marginBottom: '24px', textTransform: 'uppercase' }}>
           POLLEN LEVELS — {(pollen.level || 'LOW').toUpperCase()}
         </p>
         {[
@@ -181,10 +181,10 @@ const AirQualityPage = () => {
           <div key={label} style={{ marginBottom: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between',
                            marginBottom: '6px' }}>
-              <span style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.15em',
-                              fontSize: '11px', color: '#888' }}>{label}</span>
-              <span style={{ fontFamily: 'Jost', fontSize: '13px',
-                              color: '#000' }}>{value}</span>
+              <span style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.1em',
+                              fontSize: '13px', color: '#666', textTransform: 'uppercase' }}>{label}</span>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px',
+                              color: '#000', fontWeight: 600 }}>{value}</span>
             </div>
             <div style={{ height: '4px', background: '#eee', width: '100%' }}>
               <div style={{ height: '4px', background: '#C9A84C',
@@ -196,9 +196,9 @@ const AirQualityPage = () => {
       </div>
 
       {/* Health Recommendations */}
-      <div style={{ border: '1px solid #000', padding: '32px' }}>
-        <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
-                    color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+      <div style={{ border: '1px solid #000', padding: '32px', background: '#fff' }}>
+        <p style={{ fontFamily: 'DM Serif Display, serif', letterSpacing: '0.15em',
+                    color: '#C9A84C', fontSize: '14px', marginBottom: '24px', textTransform: 'uppercase' }}>
           HEALTH RECOMMENDATIONS
         </p>
         {(aqi <= 20 ? [
@@ -224,19 +224,20 @@ const AirQualityPage = () => {
           '✕ Seek medical advice if experiencing symptoms',
           '✕ Keep all windows sealed — use air purifier'
         ]).map((tip, i) => (
-          <p key={i} style={{ fontFamily: 'Jost', fontSize: '14px',
-                               color: '#333', lineHeight: 1.8, margin: '0 0 8px 0',
-                               paddingLeft: '8px' }}>
+          <p key={i} style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px',
+                               color: '#333', lineHeight: 1.8, margin: '0 0 10px 0',
+                               paddingLeft: '12px', borderLeft: '2px solid #eee' }}>
             {tip}
           </p>
         ))}
-        <p style={{ fontFamily: 'Jost', fontSize: '11px', color: '#bbb',
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#bbb',
                     marginTop: '24px', borderTop: '1px solid #eee',
                     paddingTop: '16px' }}>
           Data source: Open-Meteo Air Quality API • Updated on load
         </p>
       </div>
     </div>
+
   );
 };
 
