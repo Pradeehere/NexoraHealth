@@ -104,7 +104,7 @@ const Dashboard = () => {
             {/* Top Banner with Stats Overlay */}
             <div className="relative h-64 md:h-80 bg-black overflow-hidden">
                 <img
-                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80"
+                    src="/images/custom-yoga.png"
                     alt="Wellness"
                     className="w-full h-full object-cover opacity-60 scale-105 hover:scale-100 transition-transform duration-700"
                 />

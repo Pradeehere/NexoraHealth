@@ -110,7 +110,7 @@ const LandingPage = () => {
 
                     <div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-gray-100 border border-black overflow-hidden shadow-2xl">
                         {/* The Yoga Image */}
-                        <img src="/images/hero-luxury.jpg" alt="Nexora Health Hero" className="w-full h-full object-cover mix-blend-multiply" />
+                        <img src="/images/custom-stretch.png" alt="Nexora Health Hero" className="w-full h-full object-cover mix-blend-multiply" />
                         <div className="absolute inset-0 bg-gradient-to-tr from-brand-gold/10 to-transparent mix-blend-overlay"></div>
                     </div>
                 </div>
