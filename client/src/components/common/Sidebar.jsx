@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { LayoutDashboard, ActivitySquare, PieChart, UserCircle, ShieldAlert, Scale, Wind, ChevronLeft, ChevronRight, Heart, UtensilsCrossed } from 'lucide-react';
 
 const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const { user } = useSelector((state) => state.auth);
@@ -11,6 +11,7 @@ const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     const navItems = [
         { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { path: '/tracker', label: 'Tracker', icon: ActivitySquare },
+        { path: '/meal-planner', label: 'Meal Planner', icon: UtensilsCrossed },
         { path: '/reports', label: 'Reports', icon: PieChart },
         { path: '/air-quality', label: 'Air Quality', icon: Wind },
         { path: '/bmi', label: 'BMI', icon: Scale },

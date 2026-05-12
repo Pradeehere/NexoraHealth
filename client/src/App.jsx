@@ -15,8 +15,10 @@ import Reports from './pages/Reports';
 import BMIPage from './pages/BMIPage';
 import Profile from './pages/Profile';
 import AirQualityPage from './pages/AirQualityPage';
+import MealPlannerPage from './pages/MealPlannerPage';
 import AdminPanel from './pages/AdminPanel';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import PWAInstallBanner from './components/common/PWAInstallBanner';
 
 function AppContent() {
@@ -69,6 +71,11 @@ function AppContent() {
                 <HealthTracker />
               </ProtectedRoute>
             } />
+            <Route path="/meal-planner" element={
+              <ProtectedRoute>
+                <MealPlannerPage />
+              </ProtectedRoute>
+            } />
             <Route path="/reports" element={
               <ProtectedRoute>
                 <Reports />
@@ -86,7 +93,9 @@ function AppContent() {
             } />
             <Route path="/air-quality" element={
               <ProtectedRoute>
-                <AirQualityPage />
+                <ErrorBoundary>
+                  <AirQualityPage />
+                </ErrorBoundary>
               </ProtectedRoute>
             } />
             <Route path="/admin" element={

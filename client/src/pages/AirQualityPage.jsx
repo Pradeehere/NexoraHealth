@@ -1,221 +1,243 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { MapPin, Info, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const AirQualityPage = () => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const token = useSelector(state => state.auth?.token || state.auth?.user?.token || '');
+  const BASE = import.meta.env.VITE_API_URL || 'https://nexora-health-api.onrender.com/api';
 
-    const fetchData = async () => {
+  // SAFE mock data — always available as fallback
+  const MOCK = {
+    aqi: 58, aqiLevel: 'Moderate', aqiColor: '#ff7e00',
+    pm25: 35, pm10: 62, uvIndex: 7,
+    pollen: { birch: 3, grass: 12, olive: 2, level: 'Moderate' },
+    warning: 'Moderate air quality. Sensitive groups should limit outdoor exposure.',
+    location: { lat: 12.9716, lon: 77.5946 }, isMockData: true
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        let lat = 12.9716, lon = 77.5946;
         try {
-            setLoading(true);
-            // Get token the same way as rest of app
-            const token = JSON.parse(localStorage.getItem('user') || '{}').token ||
-                localStorage.getItem('token') || '';
-
-            const baseURL = import.meta.env.VITE_API_BASE_URL || '';
-            const apiPath = baseURL ? `${baseURL}/api/air-quality` : '/api/air-quality';
-
-            // Try geolocation with 5s timeout
-            let lat = 12.9716, lon = 77.5946;
-            try {
-                const pos = await new Promise((resolve, reject) => {
-                    const t = setTimeout(reject, 5000);
-                    navigator.geolocation.getCurrentPosition(
-                        p => { clearTimeout(t); resolve(p); },
-                        () => { clearTimeout(t); reject(); }
-                    );
-                });
-                lat = pos.coords.latitude;
-                lon = pos.coords.longitude;
-            } catch { /* use Bangalore defaults */ }
-
-            const res = await axios.get(
-                `${apiPath}?lat=${lat}&lon=${lon}`,
-                { headers: { Authorization: `Bearer ${token}` }, timeout: 15000 }
+          const pos = await new Promise((res, rej) => {
+            const t = setTimeout(rej, 5000);
+            navigator.geolocation?.getCurrentPosition(
+              p => { clearTimeout(t); res(p); },
+              () => { clearTimeout(t); rej(); }
             );
-            console.log("Air Quality Page Data:", res.data);
-            setData(res.data);
-        } catch (err) {
-            console.error("Fetch error, using mock data", err);
-            // Always show mock data — never show error page
-            setData({
-                aqi: 58,
-                aqiLevel: 'Moderate',
-                aqiColor: '#ff7e00',
-                pm25: 35,
-                pm10: 62,
-                uvIndex: 7,
-                pollen: { birch: 3, grass: 12, olive: 2, level: 'Moderate' },
-                warning: 'Moderate air quality. Sensitive groups should limit prolonged outdoor exposure.',
-                location: { lat: 12.9716, lon: 77.5946 },
-                isMockData: true
-            });
-        } finally {
-            setLoading(false);
-        }
+          });
+          lat = pos.coords.latitude;
+          lon = pos.coords.longitude;
+        } catch { /* use Bangalore */ }
+
+        const { data: result } = await axios.get(
+          `${BASE}/air-quality?lat=${lat}&lon=${lon}`,
+          { headers: { Authorization: `Bearer ${token}` }, timeout: 12000 }
+        );
+        if (!cancelled) setData(result);
+      } catch (e) {
+        console.error('Air quality load failed:', e.message);
+        if (!cancelled) setData(MOCK);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     };
+    load();
+    return () => { cancelled = true; };
+  }, [token]);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+  // SAFE rendering — check every property before using
+  if (loading) return (
+    <div style={{ padding: '48px', fontFamily: 'Jost' }}>
+      <div style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                    color: '#C9A84C', fontSize: '13px' }}>
+        LOADING AIR QUALITY DATA...
+      </div>
+    </div>
+  );
 
-    if (loading) return <div className="p-8 font-tenor uppercase tracking-widest text-center h-screen flex items-center justify-center">Curating Atmosphere...</div>;
-    if (!data) return null;
+  if (!data) return null; // should never happen but prevents blank crash
 
-    const recommendations = (() => {
-        switch (data.aqiLevel) {
-            case 'Good': return ["Great day for outdoor exercise!", "Ideal time for outdoor gardening", "Ventilate your home with fresh air", "Enjoy a walk in the park"];
-            case 'Fair': return ["Sensitive groups should limit prolonged outdoor exertion", "Good day for most outdoor activities", "Consider outdoor activities in the morning", "Clean air filters if you have them"];
-            case 'Moderate': return ["Consider wearing a mask outdoors", "Sensitive groups should avoid heavy outdoor work", "Keep windows closed during peak traffic", "Monitor air quality regularly"];
-            case 'Poor': return ["Avoid outdoor activities if you have asthma or respiratory issues", "Wearing an N95 mask is highly recommended", "Minimize all outdoor physical exertion", "Use air purifiers indoors"];
-            case 'Very Poor': return ["Stay indoors. Keep windows closed.", "Avoid all outdoor physical activity", "Run air purifiers on high setting", "Use a mask even for short trips outside"];
-            case 'Extremely Poor': return ["Do not go outside.", "Seek medical advice if experiencing symptoms", "Maintain strictly closed indoor environment", "Emergency respiratory protection required"];
-            default: return ["Awaiting more data..."];
-        }
-    })();
+  const aqi = data?.aqi ?? 0;
+  const aqiLevel = data?.aqiLevel ?? 'Unknown';
+  const aqiColor = data?.aqiColor ?? '#888';
+  const pm25 = data?.pm25 ?? 0;
+  const pm10 = data?.pm10 ?? 0;
+  const uvIndex = data?.uvIndex ?? 0;
+  const pollen = data?.pollen ?? { birch: 0, grass: 0, olive: 0, level: 'Low' };
+  const warning = data?.warning ?? null;
 
-    const dashArray = 283; // 2 * PI * 45
-    const dashOffset = dashArray - (dashArray * Math.min(data.aqi, 100)) / 100;
+  // AQI circle percentage (max AQI ~150 for display)
+  const aqiPercent = Math.min((aqi / 150) * 100, 100);
+  const circumference = 2 * Math.PI * 70;
+  const strokeDash = (aqiPercent / 100) * circumference;
 
-    return (
-        <div className="space-y-8 animate-fade-in-up pb-12 max-w-6xl mx-auto pt-8 px-8">
-            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-black pb-8">
-                <div>
-                    <h1 className="text-5xl font-cormorant italic font-bold tracking-tight uppercase">Air Quality Monitor</h1>
-                    <div className="flex items-center gap-2 mt-4 text-gray-500 font-tenor text-lg tracking-widest leading-loose">
-                        <MapPin size={18} className="text-brand-gold" />
-                        <span>Detecting Atmosphere: {Number(data.location?.lat || 0).toFixed(4)}, {Number(data.location?.lon || 0).toFixed(4)}</span>
-                    </div>
-                </div>
-                <button
-                    onClick={() => fetchData()}
-                    className="flex items-center gap-3 border border-black px-8 py-3 hover:bg-black hover:text-white transition-all font-tenor uppercase tracking-[0.2em] text-xs"
-                >
-                    <RefreshCw size={16} />
-                    Refresh Data
-                </button>
-            </header>
+  return (
+    <div style={{ padding: '32px 40px', fontFamily: 'Jost, sans-serif',
+                  maxWidth: '1000px', margin: '0 auto' }}>
+      
+      {/* Page Title */}
+      <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                  color: '#C9A84C', fontSize: '13px', marginBottom: '8px' }}>
+        AIR QUALITY MONITOR
+      </p>
+      <h1 style={{ fontFamily: 'Cormorant Garamond', fontSize: '48px',
+                   fontStyle: 'italic', color: '#000', marginBottom: '8px', fontWeight: 600 }}>
+        Bengaluru, India
+      </h1>
+      {data.isMockData && (
+        <p style={{ color: '#999', fontSize: '12px', marginBottom: '32px' }}>
+          Showing estimated data for your region
+        </p>
+      )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Main Gauge */}
-                <div className="luxury-card p-12 flex flex-col items-center justify-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4">
-                        <Info size={20} className="text-gray-200" />
-                    </div>
-
-                    <div className="relative w-72 h-72">
-                        <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="2" fill="transparent" className="text-gray-100" />
-                            <circle
-                                cx="50" cy="50" r="45"
-                                stroke={data.aqiColor}
-                                strokeWidth="4"
-                                strokeDasharray={dashArray}
-                                strokeDashoffset={dashOffset}
-                                strokeLinecap="round"
-                                fill="transparent"
-                                className="transition-all duration-1000 ease-out"
-                            />
-                        </svg>
-
-                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <span className="font-cormorant text-8xl font-bold" style={{ color: data.aqiColor }}>
-                                {Math.round(data.aqi)}
-                            </span>
-                            <span className="font-tenor text-sm font-bold tracking-[0.3em] uppercase mt-2" style={{ color: data.aqiColor }}>
-                                {data.aqiLevel}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="mt-12 text-center max-w-sm">
-                        <p className="font-jost text-gray-600 leading-relaxed italic">
-                            "The air quality in your current sector is classified as <span className="font-bold underline" style={{ color: data.aqiColor }}>{data.aqiLevel}</span>.
-                            {data.aqi > 60 ? ' We recommend staying indoors for optimal respiratory health.' : ' It is a pristine time for outdoor activities.'}"
-                        </p>
-                    </div>
-                </div>
-
-                {/* Detailed Breakdown */}
-                <div className="space-y-8">
-                    <h3 className="font-tenor text-base font-bold text-brand-gold uppercase tracking-[0.2em]">Atmos Breakdown</h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            { label: 'PM2.5', value: data.pm25, unit: 'μg/m³', desc: 'Fine particles' },
-                            { label: 'PM10', value: data.pm10, unit: 'μg/m³', desc: 'Inhalable particles' },
-                            { label: 'UV Index', value: data.uvIndex, unit: 'Level', desc: 'Solar radiation' }
-                        ].map((stat) => (
-                            <div key={stat.label} className="luxury-card p-6 flex flex-col">
-                                <span className="font-tenor text-[10px] text-gray-400 tracking-widest uppercase mb-4">{stat.label}</span>
-                                <span className="font-cormorant text-4xl font-bold border-b border-brand-gold/30 pb-2 mb-2">{stat.value}<span className="text-xs ml-1 font-normal text-gray-500">{stat.unit}</span></span>
-                                <span className="text-[10px] text-gray-400 font-jost uppercase italic">{stat.desc}</span>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="luxury-card p-8">
-                        <div className="flex justify-between items-center mb-8 border-b border-black pb-4">
-                            <h4 className="font-tenor font-bold text-sm tracking-[0.2em] uppercase">Detailed Pollen Outlook</h4>
-                            <span className={`px-4 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full ${data.pollen.level === 'Low' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`}>
-                                {data.pollen.level} Intensity
-                            </span>
-                        </div>
-
-                        <div className="space-y-6">
-                            {[
-                                { label: 'Birch Pollen Count', val: data.pollen.birch, color: '#C9A84C' },
-                                { label: 'Grass Pollen Count', val: data.pollen.grass, color: '#C9A84C' },
-                                { label: 'Olive Pollen Count', val: data.pollen.olive, color: '#C9A84C' }
-                            ].map(item => (
-                                <div key={item.label} className="space-y-2">
-                                    <div className="flex justify-between font-tenor text-[10px] uppercase tracking-widest">
-                                        <span>{item.label}</span>
-                                        <span>{item.val} Grains/m³</span>
-                                    </div>
-                                    <div className="h-1.5 bg-gray-100 w-full overflow-hidden">
-                                        <div
-                                            className="h-full transition-all duration-1000"
-                                            style={{ width: `${Math.min(item.val * 2.5, 100)}%`, backgroundColor: item.color }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-black text-white p-12">
-                <div className="flex items-center gap-4 mb-10">
-                    <div className="h-[2px] w-12 bg-brand-gold"></div>
-                    <h3 className="font-tenor text-base tracking-[0.3em] uppercase text-brand-gold">Nexora Wellness Protocols</h3>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {recommendations.map((rec, i) => (
-                        <div key={i} className="flex gap-4 group">
-                            <CheckCircle2 size={24} className="text-brand-gold shrink-0 group-hover:scale-125 transition-transform" />
-                            <p className="font-jost text-sm leading-relaxed text-gray-300">
-                                {rec}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <footer className="pt-8 border-t border-black flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-tenor text-gray-400 tracking-widest uppercase">
-                <div className="flex items-center gap-2">
-                    <AlertCircle size={14} />
-                    <span>Atmospheric data synchronized with Open-Meteo European AQI standard</span>
-                </div>
-                <div>
-                    Updated: {new Date().toLocaleTimeString()}
-                </div>
-            </footer>
+      {/* Warning Banner */}
+      {warning && (
+        <div style={{ borderLeft: '4px solid #ff4757', padding: '16px 20px',
+                      background: '#fff5f5', marginBottom: '32px',
+                      display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+          <span style={{ fontSize: '20px' }}>⚠️</span>
+          <p style={{ margin: 0, color: '#c0392b', fontSize: '14px', lineHeight: 1.6 }}>
+            {warning}
+          </p>
         </div>
-    );
+      )}
+
+      {/* Main Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr',
+                    gap: '24px', marginBottom: '24px' }}>
+        
+        {/* AQI Gauge Card */}
+        <div style={{ border: '1px solid #000', padding: '40px 32px',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                      color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+            AIR QUALITY INDEX
+          </p>
+          <svg width="180" height="180" style={{ transform: 'rotate(-90deg)' }}>
+            <circle cx="90" cy="90" r="70" fill="none"
+                    stroke="#eee" strokeWidth="8" />
+            <circle cx="90" cy="90" r="70" fill="none"
+                    stroke={aqiColor} strokeWidth="8"
+                    strokeDasharray={`${strokeDash} ${circumference}`}
+                    strokeLinecap="round"
+                    style={{ transition: 'stroke-dasharray 1s ease' }} />
+          </svg>
+          <div style={{ marginTop: '-140px', marginBottom: '100px',
+                        textAlign: 'center', zIndex: 1 }}>
+            <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '64px',
+                        fontWeight: 600, color: aqiColor, margin: 0,
+                        lineHeight: 1 }}>
+              {aqi}
+            </p>
+            <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.2em',
+                        fontSize: '13px', color: '#000', marginTop: '4px' }}>
+              {aqiLevel.toUpperCase()}
+            </p>
+          </div>
+        </div>
+
+        {/* Stats Card */}
+        <div style={{ border: '1px solid #000', padding: '32px' }}>
+          <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                      color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+            DETAILED METRICS
+          </p>
+          {[
+            { label: 'PM2.5', value: pm25, unit: 'μg/m³' },
+            { label: 'PM10', value: pm10, unit: 'μg/m³' },
+            { label: 'UV INDEX', value: uvIndex, unit: '' },
+          ].map(({ label, value, unit }) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
+                                       alignItems: 'baseline', borderBottom: '1px solid #eee',
+                                       paddingBottom: '16px', marginBottom: '16px' }}>
+              <span style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.15em',
+                              fontSize: '11px', color: '#888' }}>{label}</span>
+              <span style={{ fontFamily: 'Cormorant Garamond', fontSize: '32px',
+                              fontWeight: 600, color: '#000' }}>
+                {value}<span style={{ fontSize: '14px', color: '#888',
+                                       marginLeft: '4px', fontFamily: 'Jost' }}>{unit}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Pollen Card */}
+      <div style={{ border: '1px solid #000', padding: '32px', marginBottom: '24px' }}>
+        <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                    color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+          POLLEN LEVELS — {(pollen.level || 'LOW').toUpperCase()}
+        </p>
+        {[
+          { label: 'BIRCH', value: pollen.birch ?? 0 },
+          { label: 'GRASS', value: pollen.grass ?? 0 },
+          { label: 'OLIVE', value: pollen.olive ?? 0 },
+        ].map(({ label, value }) => (
+          <div key={label} style={{ marginBottom: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between',
+                           marginBottom: '6px' }}>
+              <span style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.15em',
+                              fontSize: '11px', color: '#888' }}>{label}</span>
+              <span style={{ fontFamily: 'Jost', fontSize: '13px',
+                              color: '#000' }}>{value}</span>
+            </div>
+            <div style={{ height: '4px', background: '#eee', width: '100%' }}>
+              <div style={{ height: '4px', background: '#C9A84C',
+                             width: `${Math.min((value / 60) * 100, 100)}%`,
+                             transition: 'width 1s ease' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Health Recommendations */}
+      <div style={{ border: '1px solid #000', padding: '32px' }}>
+        <p style={{ fontFamily: 'Tenor Sans', letterSpacing: '0.25em',
+                    color: '#C9A84C', fontSize: '11px', marginBottom: '24px' }}>
+          HEALTH RECOMMENDATIONS
+        </p>
+        {(aqi <= 20 ? [
+          '✓ Excellent day for outdoor exercise and activities',
+          '✓ Air quality poses no risk — enjoy the outdoors',
+          '✓ Great conditions for morning runs or cycling'
+        ] : aqi <= 40 ? [
+          '○ Good conditions for most outdoor activities',
+          '○ Unusually sensitive individuals should monitor symptoms',
+          '○ Safe for jogging, walking, and outdoor sports'
+        ] : aqi <= 60 ? [
+          '⚠ Sensitive groups should limit prolonged outdoor exertion',
+          '⚠ Consider wearing a light mask during outdoor exercise',
+          '⚠ Keep windows slightly closed during peak hours'
+        ] : aqi <= 80 ? [
+          '✕ Avoid strenuous outdoor activities',
+          '✕ People with asthma should stay indoors',
+          '✕ Keep windows and doors closed',
+          '✕ Use air purifier if available'
+        ] : [
+          '✕ Do not go outside unless absolutely necessary',
+          '✕ Wear N95 mask if going outdoors',
+          '✕ Seek medical advice if experiencing symptoms',
+          '✕ Keep all windows sealed — use air purifier'
+        ]).map((tip, i) => (
+          <p key={i} style={{ fontFamily: 'Jost', fontSize: '14px',
+                               color: '#333', lineHeight: 1.8, margin: '0 0 8px 0',
+                               paddingLeft: '8px' }}>
+            {tip}
+          </p>
+        ))}
+        <p style={{ fontFamily: 'Jost', fontSize: '11px', color: '#bbb',
+                    marginTop: '24px', borderTop: '1px solid #eee',
+                    paddingTop: '16px' }}>
+          Data source: Open-Meteo Air Quality API • Updated on load
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default AirQualityPage;
