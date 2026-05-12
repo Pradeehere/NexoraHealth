@@ -104,9 +104,9 @@ const Dashboard = () => {
             {/* Top Banner with Stats Overlay */}
             <div className="relative h-64 md:h-80 bg-black overflow-hidden">
                 <img
-                    src="/images/custom-yoga.png"
+                    src="/images/dashboard_banner.png"
                     alt="Wellness"
-                    className="w-full h-full object-cover opacity-60 scale-105 hover:scale-100 transition-transform duration-700"
+                    className="w-full h-full object-cover opacity-60 hover:scale-100 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
