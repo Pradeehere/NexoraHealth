@@ -54,12 +54,27 @@ App available at `http://localhost:3000`
 See `.env.example` for details. Need `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, etc.
 
 ## Deployment
-- **Frontend**: Deploy on Vercel using Vite template preset
-- **Backend**: Deploy on Render connected to MongoDB Atlas
+- **Frontend**: [https://nexora-health.vercel.app](https://nexora-health.vercel.app) (Deployed on Vercel)
+- **Backend**: [https://nexora-health-api.onrender.com](https://nexora-health-api.onrender.com) (Deployed on Render)
+- **Database**: MongoDB Atlas Cluster
+
+## Features
+- 🚀 **Modern React PWA**: Built with Vite and Redux Toolkit for high performance.
+- 🤖 **AI Health Insights**: Personalized wellness suggestions powered by OpenAI.
+- 🏋️ **AI Workout Planner**: Custom workout routines generated based on user goals and BMI.
+- 🍱 **Meal Planner**: Smart meal tracking and planning.
+- 📊 **Interactive Analytics**: Historical health trends visualized with Recharts.
+- 🌬️ **Air Quality Monitor**: Real-time environmental tracking via Open-Meteo API.
+- 💧 **Health Metrics**: Track hydration, sleep, weight, and BMI.
+- 🔒 **Enterprise Security**: JWT Auth, Helmet, Rate Limiting, and Bcrypt hashing.
+- 🐳 **Dockerized**: Seamless local development with Docker Compose.
+
+## Screenshots
+Check the `/screenshots` directory for full-size visual previews of the application.
 
 ## Seeded Test Credentials
-- Admin: `admin@nexora.com` / `Admin@123`
-- User: `arjun@nexora.com` / `User@123`
+- **Admin**: `admin@nexora.com` / `Admin@123`
+- **User**: `arjun@nexora.com` / `User@123`
 
 ---
 Released under the [MIT License](LICENSE).
