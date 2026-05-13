@@ -59,7 +59,7 @@ See `.env.example` for details. Need `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, et
 
 ## Seeded Test Credentials
 - Admin: `admin@nexora.com` / `Admin@123`
-- User: `arjun@nexora.com` / `User@123`
+- User: `Pradeep@nexora.com` / `User@789`
 
 ---
 Released under the [MIT License](LICENSE).
