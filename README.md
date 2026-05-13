@@ -74,7 +74,7 @@ Check the `/screenshots` directory for full-size visual previews of the applicat
 
 ## Seeded Test Credentials
 - Admin: `admin@nexora.com` / `Admin@123`
-- User: `arjun@nexora.com` / `User@123`
+- User: `Pradeep@nexora.com` / `User@789`
 
 ---
 Released under the [MIT License](LICENSE).
