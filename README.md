@@ -73,8 +73,8 @@ See `.env.example` for details. Need `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL`, et
 Check the `/screenshots` directory for full-size visual previews of the application.
 
 ## Seeded Test Credentials
-- **Admin**: `admin@nexora.com` / `Admin@123`
-- **User**: `arjun@nexora.com` / `User@123`
+- Admin: `admin@nexora.com` / `Admin@123`
+- User: `arjun@nexora.com` / `User@123`
 
 ---
 Released under the [MIT License](LICENSE).
