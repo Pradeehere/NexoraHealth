@@ -20,8 +20,6 @@
 - 🐳 Full Dockerization
 - 🎨 Stunning Glassmorphism UI (Tailwind CSS)
 
-## Screenshots
-[Placeholder for screenshots - check `/screenshots` folder]
 
 ## Local Setup
 1. Clone the repo and `cd nexora-health`
